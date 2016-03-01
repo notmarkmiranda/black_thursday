@@ -1,0 +1,6 @@
+language: ruby
+before install:
+- rvm use 2.3.0
+- gem install bundler
+- bundle install
+script: bundle exec rake test
