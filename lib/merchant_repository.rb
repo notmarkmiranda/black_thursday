@@ -8,7 +8,20 @@ class MerchantRepository
     end
 
     def all
-      @repo.map { |key| [:id => key.id, :name=> key.name]}.flatten
+      @repo.map { |key| [:id => key.id, :name => key.name]}.flatten
     end
 
+    def find_by_id(id)
+      @repo.find { |key| key.id == id }
+    end
+
+    def find_by_name(name)
+      @repo.find { |key| key.name.downcase.include?(name.downcase) }
+    end
+
+    def find_all_by_name(name)
+      @repo.find_all do |key|
+        key.name.downcase.include?(name.downcase)
+      end.map {|key| [:id => key.id, :name => key.name] }.flatten
+    end
 end
