@@ -1,0 +1,29 @@
+{
+  "Unit Tests": {
+    "coverage": {
+      "/Users/jeneveparrish/Turing/1module/black_thursday/lib/item.rb": [
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        7,
+        7,
+        7,
+        42,
+        null,
+        null,
+        null
+      ]
+    },
+    "timestamp": 1456858752
+  }
+}
