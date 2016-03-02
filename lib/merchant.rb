@@ -2,11 +2,11 @@ require 'csv'
 
 class Merchant
   attr_reader :id, :name
-  @contents = CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol)
+  # @contents = CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol)
 
-  def initialize(hash)
-    @id = hash[:id]
-    @name = hash[:name]
+  def initialize(merchant)
+    @id = merchant[:id]
+    @name = merchant[:name]
     # append_to_file(hash)
   end
 

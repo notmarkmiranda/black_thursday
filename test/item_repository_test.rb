@@ -76,7 +76,7 @@ class ItemRespositoryTest < Minitest::Test
     too_low = BigDecimal.new(10.99,4)
     low = BigDecimal.new(20.99,4)
     high = BigDecimal.new(50.99,4)
-    
+
     assert_equal [@pencil, @paper, @eraser],  @repo.find_all_by_price_in_range(low, high)
     assert_equal [], @repo.find_all_by_price_in_range(too_low, low)
   end
