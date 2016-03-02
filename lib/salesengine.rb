@@ -10,6 +10,7 @@ class SalesEngine
     @merchants = merchants_repo
   end
 
+
   def self.from_csv(path_hash)
     load_items(path_hash[:items])
     items_repo = ItemRespository.new(@items_list_format)

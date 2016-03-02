@@ -2,9 +2,13 @@ require_relative 'item'
 require 'bigdecimal'
 
 class ItemRespository
-  
+
   def initialize(items = [])
     @items = items
+  end
+
+  def find_size
+    @items.count
   end
 
   def all

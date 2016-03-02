@@ -8,6 +8,10 @@ class MerchantRepository
       @all = merchant
     end
 
+    def find_size
+      @merchant.size
+    end
+    
     def find_by_id(id)
       @merchant.find { |key| key.id == id }
     end
