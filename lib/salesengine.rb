@@ -22,8 +22,8 @@ class SalesEngine
     SalesEngine.new(items_repo, merchants_repo)
   end
 
-  def self.load_items(location)
-    raw_items = CSV.open(location, headers: true, header_converters: :symbol)
+  def self.load_items(loc)
+    raw_items = CSV.open(loc, headers: true, header_converters: :symbol)
     @items_list_format = raw_items.map do |row|
       Item.new({:id          => row[:id],
                 :name        => row[:name],
@@ -36,8 +36,8 @@ class SalesEngine
     end
   end
 
-  def self.load_merchants(location)
-    raw_merchants = CSV.open(location, headers:true, header_converters: :symbol)
+  def self.load_merchants(loc)
+    raw_merchants = CSV.open(loc, headers:true, header_converters: :symbol)
     @merchants_list_format = raw_merchants.map do |row|
       Merchant.new({:id  => row[:id],
                    :name => row[:name],
