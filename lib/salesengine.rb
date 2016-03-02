@@ -16,8 +16,6 @@ class SalesEngine
 
     load_merchants(path_hash[:merchants])
     merchants_repo = MerchantRepository.new(@merchants_list_format)
-    # merchants_list = CSV.readlines path_hash[:merchants], headers: true, header_converters: :symbol
-    # @merchants_object = MerchantRepository.new(merchants_list)
 
     SalesEngine.new(items_repo, merchants_repo)
   end
@@ -34,6 +32,18 @@ class SalesEngine
                 :merchant_id => row[:merchant_id]
               })
     end
+
+    # potential opportunity to refactor starts here:
+#     arr_of_items = []
+#     CSV.foreach(path_hash.values_at(:items).pop, {:headers => true, :header_converters => :symbol}) do |row|
+#       arr_of_items << Item.new(row.to_hash)
+#     end
+# ​
+#     arr_of_merchants = []
+#     CSV.foreach(path_hash.values_at(:merchants).pop, {:headers => true, :header_converters => :symbol}) do |row|
+#       arr_of_merchants << Merchant.new(row.to_hash)
+#     end
+
   end
 
   def self.load_merchants(loc)

@@ -5,10 +5,7 @@ class MerchantRepository
   # @contents = CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol)
     def initialize(merchant = [])
       @merchant = merchant
-    end
-
-    def all
-      @merchant
+      @all = merchant
     end
 
     def find_by_id(id)
