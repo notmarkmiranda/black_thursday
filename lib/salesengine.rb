@@ -11,10 +11,10 @@ class SalesEngine
   end
 
   def self.from_csv(path_hash)
-    items_list = load_items(path_hash[:items])
+    load_items(path_hash[:items])
     items_repo = ItemRespository.new(@items_list_format)
 
-    merchants_list = load_merchants(path_hash[:merchants])
+    load_merchants(path_hash[:merchants])
     merchants_repo = MerchantRepository.new(@merchants_list_format)
     # merchants_list = CSV.readlines path_hash[:merchants], headers: true, header_converters: :symbol
     # @merchants_object = MerchantRepository.new(merchants_list)

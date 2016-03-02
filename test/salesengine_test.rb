@@ -4,21 +4,32 @@ require './lib/salesengine'
 class SalesEngineTest < Minitest::Test
 
   def setup
-    @se = SalesEngine.from_csv({
+    se = SalesEngine.from_csv({
       :items => "./data/items.csv",
       :merchants => "./data/merchants.csv"
       })
+    @m_o = se.merchants
+    @i_o = se.items
+
   end
 
   def test_items_returns_instance_of_all_merchant_items
-    assert_equal 475, @se.merchants.merchant.size
+    assert_equal 475, @m_o.merchant.size
   end
 
   def test_can_find_merchant_by_id
-    merch = @se.merchants
-    assert_equal "Keckenbauer", merch.find_by_id("12334123").name
+    assert_equal "Keckenbauer", @m_o.find_by_id("12334123").name
   end
-  # items returns an instance of ItemRepository with all the item instances loaded
-  # merchants returns an instance of MerchantRepository with all the merchant instances loaded
+
+  def test_can_find_merchant_by_name_or_partial_name
+    assert_equal "GoldenRayPress", @m_o.find_by_name("GOLDENRAYPRESS").name
+    assert_equal "GoldenRayPress", @m_o.find_by_name("golDENray").name
+
+  end
+
+  def test_can_find_item_by_id
+    assert_equal "510+ RealPush Icon Set", @i_o.find_by_id("263395237").name
+  end
+
 
 end
