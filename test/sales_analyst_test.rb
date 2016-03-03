@@ -27,7 +27,8 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_finds_the_average_price_for_a_merchants_items
-    assert_equal BigDecimal.new(1283.33, 6), @sa.average_item_price_for_merchant("12334105")
+    # binding.pry
+    assert_equal BigDecimal.new(12.8333, 6).to_f, @sa.average_item_price_for_merchant("12334105").to_f.round(4)
   end
 
   def test_it_returns_all_of_the_items_two_standard_deviations_above_average

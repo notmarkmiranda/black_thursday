@@ -34,4 +34,10 @@ class SalesAnalyst
     end
   end
 
+  def average_item_price_for_merchant(id)
+    prices = @se.items.find_all_by_merchant_id(id).map do |item|
+      item.unit_price
+    end.reduce(:+) / (@se.items.find_all_by_merchant_id(id)).count
+  end
+
 end

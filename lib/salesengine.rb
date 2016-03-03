@@ -1,6 +1,7 @@
 require './lib/merchant_repository'
 require './lib/item_repository'
 require 'csv'
+require 'bigdecimal'
 
 class SalesEngine
   attr_reader :items, :merchants
@@ -24,10 +25,11 @@ class SalesEngine
   def self.load_items(loc)
     raw_items = CSV.open(loc, headers: true, header_converters: :symbol)
     @items_list_format = raw_items.map do |row|
+      # binding.pry
       Item.new({:id          => row[:id],
                 :name        => row[:name],
                 :description => row[:description],
-                :unit_price  => row[:unit_price],
+                :unit_price  => BigDecimal.new(row[:unit_price][0..-3] + "." + row[:unit_price][-2..-1], 6),
                 :created_at  => row[:created_at],
                 :updated_at  => row[:updated_at],
                 :merchant_id => row[:merchant_id]
