@@ -14,7 +14,7 @@ class SalesEngine
 
   def self.from_csv(path_hash)
     load_items(path_hash[:items])
-    items_repo = ItemRespository.new(@items_list_format)
+    items_repo = ItemRepository.new(@items_list_format)
 
     load_merchants(path_hash[:merchants])
     merchants_repo = MerchantRepository.new(@merchants_list_format)

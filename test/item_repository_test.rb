@@ -4,7 +4,7 @@ require_relative '../lib/item_repository'
 require 'pry'
 
 
-class ItemRespositoryTest < Minitest::Test
+class ItemRepositoryTest < Minitest::Test
 
   def setup
 
@@ -38,8 +38,8 @@ class ItemRespositoryTest < Minitest::Test
         :merchant_id => 20
       })
 
-      @repo = ItemRespository.new([@pencil, @paper, @eraser])
-      @repo2 = ItemRespository.new
+      @repo = ItemRepository.new([@pencil, @paper, @eraser])
+      @repo2 = ItemRepository.new
 
   end
 
@@ -84,5 +84,9 @@ class ItemRespositoryTest < Minitest::Test
   def test_it_returns_items_matching_the_given_merchant_id
     assert_equal [@pencil, @eraser], @repo.find_all_by_merchant_id(20)
     assert_equal [], @repo.find_all_by_merchant_id(30)
+  end
+
+  def test_can_find_size_of_repository
+    assert_equal 3, @repo.find_size
   end
 end

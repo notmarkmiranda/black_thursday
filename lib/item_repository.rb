@@ -1,7 +1,7 @@
 require_relative 'item'
 require 'bigdecimal'
 
-class ItemRespository
+class ItemRepository
 
   def initialize(items = [])
     @items = items
