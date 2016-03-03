@@ -29,7 +29,7 @@ class SalesEngine
       Item.new({:id          => row[:id],
                 :name        => row[:name],
                 :description => row[:description],
-                :unit_price  => BigDecimal.new(row[:unit_price][0..-3] + "." + row[:unit_price][-2..-1], 6),
+                :unit_price  => BigDecimal.new(row[:unit_price][0..-3] + "." + row[:unit_price][-2..-1]),
                 :created_at  => row[:created_at],
                 :updated_at  => row[:updated_at],
                 :merchant_id => row[:merchant_id]

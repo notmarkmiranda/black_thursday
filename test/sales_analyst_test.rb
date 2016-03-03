@@ -1,5 +1,6 @@
 require './test/test_helper'
 require './lib/sales_analyst'
+require 'pry'
 
 class SalesAnalystTest < Minitest::Test
 
@@ -19,21 +20,21 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_finds_the_standard_deviation
     # puts @merch_ids
-    assert_equal 7.0, @sa.average_items_per_merchant_standard_deviation
+    assert_equal 2.16, @sa.average_items_per_merchant_standard_deviation
   end
 
   def test_it_finds_which_merchants_sell_the_most_items
-    assert_equal ["Shopin1901", "Candisart", "MiniatureBikez"], @sa.merchants_with_high_item_count
+    result = ["Shopin1901", "Candisart", "MiniatureBikez"]
+    assert_equal result, @sa.merchants_with_high_item_count.map { |merch| merch.name}
   end
 
   def test_it_finds_the_average_price_for_a_merchants_items
-    # binding.pry
-    assert_equal BigDecimal.new(12.8333, 6).to_f, @sa.average_item_price_for_merchant("12334105").to_f.round(4)
+    assert_equal 12.83, @sa.average_item_price_for_merchant("12334105")
   end
 
   def test_it_returns_all_of_the_items_two_standard_deviations_above_average
-    skip
-    # assert_equal [item, item], @sa.golden_items
+    result = ["Course contre la montre"]
+    assert_equal result, @sa.golden_items.map { |item| item.name}
   end
 
 end
