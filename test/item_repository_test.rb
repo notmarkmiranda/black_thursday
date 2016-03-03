@@ -76,9 +76,10 @@ class ItemRepositoryTest < Minitest::Test
     too_low = BigDecimal.new(10.99,4)
     low = BigDecimal.new(20.99,4)
     high = BigDecimal.new(50.99,4)
-
-    assert_equal [@pencil, @paper, @eraser],  @repo.find_all_by_price_in_range(low, high)
-    assert_equal [], @repo.find_all_by_price_in_range(too_low, low)
+    range = (low..high)
+    range2 = (too_low..low)
+    assert_equal [@pencil, @paper, @eraser],  @repo.find_all_by_price_in_range(range)
+    assert_equal [], @repo.find_all_by_price_in_range(range2)
   end
 
   def test_it_returns_items_matching_the_given_merchant_id

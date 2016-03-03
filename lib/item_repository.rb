@@ -2,9 +2,26 @@ require_relative 'item'
 require 'bigdecimal'
 
 class ItemRepository
+  attr_reader :merchants, :all, :repo
+  attr_accessor :engine
 
-  def initialize(items = [])
+  def initialize(items, engine = nil)
     @items = items
+    @engine = engine
+    create_new_items(items)
+  end
+
+  def create_new_items(raw_items, repo = nil)
+    raw_items.map do |row|
+      Item.new({:id          => row[:id].to_i,
+                :name        => row[:name],
+                :description => row[:description],
+                :unit_price  => BigDecimal.new(row[:unit_price][0..-3] + "." + row[:unit_price][-2..-1]),
+                :created_at  => Time.strptime(row[:created_at], "%Y-%m-%d %H:%M:%S %Z"),
+                :updated_at  => Time.strptime(row[:updated_at], "%Y-%m-%d %H:%M:%S %Z"),
+                :merchant_id => row[:merchant_id].to_i
+              }, self)
+    end
   end
 
   def find_size
@@ -17,7 +34,7 @@ class ItemRepository
 
   def find_by_id(num)
     @items.find do |item|
-      item.id == num
+      item.id.to_i == num
     end
   end
 
@@ -39,9 +56,9 @@ class ItemRepository
     end
   end
 
-  def find_all_by_price_in_range(low, high)
+  def find_all_by_price_in_range(range)
     @items.find_all do |item|
-      item.unit_price > low && item.unit_price < high
+      range.include?(item.unit_price)
     end
   end
 
@@ -49,6 +66,10 @@ class ItemRepository
     @items.find_all do |item|
       item.merchant_id == id
     end
+  end
+
+  def inspect
+  "#<#{self.class} #{@items.size} rows>"
   end
 
 end

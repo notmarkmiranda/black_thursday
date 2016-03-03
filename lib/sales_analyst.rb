@@ -1,4 +1,4 @@
-require './lib/salesengine'
+require_relative 'sales_engine'
 
 class SalesAnalyst
   attr_reader :se, :merch_ids
@@ -50,7 +50,8 @@ class SalesAnalyst
 
     sd = Math.sqrt(sum_of_diffs/ (all_items.count - 1))
     base = ave + (sd*2)
-    @se.items.find_all_by_price_in_range(base, BigDecimal::INFINITY)
+    range = (base..BigDecimal::INFINITY)
+    @se.items.find_all_by_price_in_range(range)
 
   end
 

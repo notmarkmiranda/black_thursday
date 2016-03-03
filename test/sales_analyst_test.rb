@@ -1,5 +1,5 @@
-require './test/test_helper'
-require './lib/sales_analyst'
+require_relative 'test_helper'
+require_relative '../lib/sales_analyst'
 require 'pry'
 
 class SalesAnalystTest < Minitest::Test
@@ -29,7 +29,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_finds_the_average_price_for_a_merchants_items
-    assert_equal 12.83, @sa.average_item_price_for_merchant("12334105")
+    assert_equal 12.83, @sa.average_item_price_for_merchant(12334105)
   end
 
   def test_it_returns_all_of_the_items_two_standard_deviations_above_average

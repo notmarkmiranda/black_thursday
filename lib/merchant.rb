@@ -1,25 +1,28 @@
+require_relative 'sales_engine'
 require 'csv'
 
 class Merchant
-  attr_reader :id, :name
-  # @contents = CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol)
+  attr_reader :id, :name, :items
+  attr_accessor :repo
 
-  def initialize(merchant)
-    @id = merchant[:id]
+  def initialize(merchant, repo = nil, engine = nil)
+    @id = merchant[:id].to_i
     @name = merchant[:name]
-    # append_to_file(hash)
+    @repo = repo
+    @items = []
+    @engine = engine
   end
 
-  # def append_to_file(hash)
-  #   date = Date.today.strftime("%Y-%m-%d")
-  #   hash[:created_at] = date
-  #   hash[:updated_at] = date
-  #
-  #   CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol) do |row|
-  #     row << hash.values
-  #   end
-  #   File.read("./data/merchants.csv")
-  # end
+  def items
 
+    # @items = self.repo.engine.merchants.find_by_id(id).items
+    #
+    a = self.repo
+    puts a
+  end
+
+  # look at the item repository
+  # for your id
+  # return all the items that are associated with that id
 
 end

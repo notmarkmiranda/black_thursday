@@ -1,6 +1,5 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require './lib/merchant_repository'
+require_relative 'test_helper'
+require_relative '../lib/merchant_repository'
 
 class MerchantRepositoryTest < Minitest::Test
 
@@ -12,11 +11,11 @@ class MerchantRepositoryTest < Minitest::Test
 
   def test_can_create_blank_merchant_repo
     mr2 = MerchantRepository.new
-    assert_equal [], mr2.merchant
+    assert_equal [], mr2.merchants
   end
 
   def test_can_accept_new_merchants
-    refute @mr.merchant.empty?
+    refute @mr.merchants.empty?
   end
 
   def test_all_returns_all_known_instances
@@ -48,6 +47,6 @@ class MerchantRepositoryTest < Minitest::Test
     mr2 = MerchantRepository.new([@merchant_1, @merchant_2, merchant_3])
 
     assert_equal [@merchant_2, merchant_3], mr2.find_all_by_name("Galvanize")
-  end
+  end  
 
 end

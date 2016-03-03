@@ -1,5 +1,5 @@
-require './test/test_helper'
-require './lib/merchant'
+require_relative 'test_helper'
+require_relative '../lib/merchant'
 
 class MerchantTest < Minitest::Test
 
@@ -17,5 +17,5 @@ class MerchantTest < Minitest::Test
     assert_equal "Turing School", @merchant_1.name
     assert_equal "Galvanize", @merchant_2.name
   end
-  
+
 end
