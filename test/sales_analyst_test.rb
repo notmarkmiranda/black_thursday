@@ -19,16 +19,20 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_finds_the_standard_deviation
-    assert_equal 2.16, @sa.average_items_per_merchant_standard_deviation(12334113)
+    assert_equal 2.16, @sa.average_items_per_merchant_standard_deviation
   end
 
   def test_it_finds_which_merchants_sell_the_most_items
-    result = ["Shopin1901", "Candisart", "MiniatureBikez"]
-    assert_equal result, @sa.merchants_with_high_item_count.map { |merch| merch.name}
+    result = []
+    assert_equal result, @sa.merchants_with_high_item_count
   end
 
   def test_it_finds_the_average_price_for_a_merchants_items
     assert_equal 12.83, @sa.average_item_price_for_merchant(12334105)
+  end
+
+  def test_average_average_can_find_the_average_of_the_averages
+    assert_equal 46.81, @sa.average_average_price_per_merchant
   end
 
   def test_it_returns_all_of_the_items_two_standard_deviations_above_average

@@ -8,13 +8,14 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    average = @se.items.all.size.to_f / @se.merchants.all.size
+    (@se.items.all.size.to_f / @se.merchants.all.size).round(2)
   end
 
-  def average_items_per_merchant_standard_deviation(merchant_id)
+  def average_items_per_merchant_standard_deviation
     ave = average_items_per_merchant
     n = @se.merchants.all.size - 1
     ids = find_merchant_ids
+    # is this a place where we can use the items method from the merchant class?
     items_per_merchant = ids.map do |id|
       @se.items.find_all_by_merchant_id(id).size
     end
@@ -31,11 +32,13 @@ class SalesAnalyst
   end
 
   def merchants_with_high_item_count
-    best = find_merchant_ids.map do |id|
-      [@se.items.find_all_by_merchant_id(id).count, @se.merchants.find_by_id(id)]
-    end.sort[-3..-1]
-    best.map do |array|
-      array[1]
+    baseline = average_items_per_merchant + average_items_per_merchant_standard_deviation
+    # is this a place where we can use the items method from the merchant class?
+    high_merchants = find_merchant_ids.find_all do |id|
+      id if @se.items.find_all_by_merchant_id(id).size > baseline
+    end
+    high_merchants.map do |id|
+      @se.merchants.find_by_id(id)
     end
   end
 
@@ -43,7 +46,16 @@ class SalesAnalyst
     price = @se.items.find_all_by_merchant_id(id).map do |item|
       item.unit_price
     end.reduce(:+) / (@se.items.find_all_by_merchant_id(id)).count
-    price.to_f.round(2)
+    price.round(2)
+  end
+
+  def average_average_price_per_merchant
+    # THIS IS WHERE YOU ARE!
+    averages = find_merchant_ids.map do |id|
+      average_item_price_for_merchant(id) unless nil
+    end
+
+    # averages.reduce(:+) / averages.size
   end
 
   def golden_items

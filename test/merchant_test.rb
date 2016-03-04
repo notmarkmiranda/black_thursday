@@ -19,6 +19,6 @@ class MerchantTest < Minitest::Test
   def test_it_can_return_names
     assert_equal "Shopin1901", @merchant.name
   end
-  
+
 
 end
