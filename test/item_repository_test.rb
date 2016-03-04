@@ -40,7 +40,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_by_merchant_id
-    assert_equal [263395237, 263395617, 263395721], @i_repo.find_all_by_merchant_id(12334105).map { |item| item.id }
+    assert_equal [263395617, 263395721], @i_repo.find_all_by_merchant_id(12334105).map { |item| item.id }
   end
 
   def test_it_inspects

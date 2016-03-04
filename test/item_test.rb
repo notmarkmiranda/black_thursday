@@ -42,12 +42,12 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_returns_the_integer_merchant_id_of_the_item
-    assert_equal 12334105, @item.merchant_id
+    assert_equal 12334114, @item.merchant_id
   end
 
   def test_merchant_item_can_find_its_merchant
     item = @items_repo.find_by_id(263395237)
-    assert_equal "Shopin1901", item.merchant.name
+    assert_equal "Mark Miranda", item.merchant.name
   end
 
 end

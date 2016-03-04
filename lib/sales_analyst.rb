@@ -43,19 +43,19 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(id)
-    price = @se.items.find_all_by_merchant_id(id).map do |item|
+    prices = @se.items.find_all_by_merchant_id(id).map do |item|
       item.unit_price
-    end.reduce(:+) / (@se.items.find_all_by_merchant_id(id)).count
-    price.round(2)
+    end
+    (prices.reduce(:+)/prices.size).round(2)
   end
 
   def average_average_price_per_merchant
-    # THIS IS WHERE YOU ARE!
-    averages = find_merchant_ids.map do |id|
-      average_item_price_for_merchant(id) unless nil
+
+    prices = @se.merchants.all.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
     end
 
-    # averages.reduce(:+) / averages.size
+    (prices.reduce(:+)/prices.length).round(2)
   end
 
   def golden_items
