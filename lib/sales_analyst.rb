@@ -8,23 +8,26 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    average = @se.items.find_size.to_f / @se.merchants.find_size.to_f
-    # (average * 1000).floor / 1000.0
+    average = @se.items.all.size.to_f / @se.merchants.all.size
+  end
+
+  def average_items_per_merchant_standard_deviation(merchant_id)
+    ave = average_items_per_merchant
+    n = @se.merchants.all.size - 1
+    ids = find_merchant_ids
+    items_per_merchant = ids.map do |id|
+      @se.items.find_all_by_merchant_id(id).size
+    end
+    num = items_per_merchant.map do |item_number|
+      (item_number - ave) ** 2
+    end.reduce(:+) / n
+    Math.sqrt(num).round(2)
   end
 
   def find_merchant_ids
-    @merch_ids = @se.merchants.all.map do |merchant|
-      merchant.id
+    @se.merchants.all.map do |merch|
+      merch.id
     end
-  end
-
-  def average_items_per_merchant_standard_deviation
-    ave = average_items_per_merchant
-    n = @se.merchants.find_size - 1
-    num = find_merchant_ids.map do |id|
-      (@se.items.find_all_by_merchant_id(id).count - ave) ** 2
-    end.reduce(:+) / n
-    Math.sqrt(num).round(2)
   end
 
   def merchants_with_high_item_count

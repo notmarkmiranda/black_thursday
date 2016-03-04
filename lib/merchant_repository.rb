@@ -1,49 +1,34 @@
+require 'csv'
 require_relative 'merchant'
+require_relative 'sales_engine'
 
 class MerchantRepository
-  attr_reader :merchants, :all, :repo
-  attr_accessor :engine
+  attr_accessor :merchants, :engine
 
-  def initialize(merchants, engine = nil)
-    @merchants = merchants
-    @all = merchants
+  def initialize(merchants_data, engine)
     @engine = engine
-    create_new_merchants(merchants)
-  end
-
-  def create_new_merchants(raw_merchants, repo = nil)
-    raw_merchants.map do |row|
-      Merchant.new({:id  => row[:id].to_i,
-                   :name => row[:name],
-                   :created_at => row[:created_at],
-                   :updated_at => row[:updated_at]
-                  }, self)
+    @merchants = merchants_data.map do |merchant|
+      Merchant.new(merchant, self)
     end
   end
-  # def items
-  #   @items = @engine.items.find_all_by_merchant_id(id)
-  # end
 
-  def find_size
-    @merchants.size
+  def all
+    @merchants
   end
 
   def find_by_id(id)
-    @merchants.find { |key| key.id == id }
+    @merchants.find { |merchant| merchant.id == id.to_i }
   end
 
   def find_by_name(name)
-    @merchants.find { |key| key.name.downcase.include?(name.downcase) }
+    @merchants.find { |merchant| merchant.name.downcase.include?(name.downcase) }
   end
 
   def find_all_by_name(name)
-    @merchants.find_all do |key|
-      key.name.downcase.include?(name.downcase)
-    end
+    merchants.find_all { |merchant| merchant.name.downcase.include?(name.downcase) }
   end
 
   def inspect
-    "#<#{self.class} #{@merchants.size} rows>"
+  "#<#{self.class} #{@merchants.size} rows>"
   end
-
 end

@@ -1,75 +1,44 @@
 require_relative 'item'
-require 'bigdecimal'
-
 class ItemRepository
-  attr_reader :merchants, :all, :repo
-  attr_accessor :engine
+  attr_accessor :items, :engine
 
-  def initialize(items, engine = nil)
-    @items = items
-    @engine = engine
-    create_new_items(items)
-  end
-
-  def create_new_items(raw_items, repo = nil)
-    raw_items.map do |row|
-      Item.new({:id          => row[:id].to_i,
-                :name        => row[:name],
-                :description => row[:description],
-                :unit_price  => BigDecimal.new(row[:unit_price][0..-3] + "." + row[:unit_price][-2..-1]),
-                :created_at  => Time.strptime(row[:created_at], "%Y-%m-%d %H:%M:%S %Z"),
-                :updated_at  => Time.strptime(row[:updated_at], "%Y-%m-%d %H:%M:%S %Z"),
-                :merchant_id => row[:merchant_id].to_i
-              }, self)
+  def initialize(items_data, engine)
+    @items = items_data.map do |item|
+      Item.new(item, self)
     end
-  end
-
-  def find_size
-    @items.count
+    @engine = engine
   end
 
   def all
     @items
   end
 
-  def find_by_id(num)
-    @items.find do |item|
-      item.id.to_i == num
-    end
+  def find_by_id(id)
+    @items.find { |item| item.id == id.to_i }
   end
 
   def find_by_name(name)
-    @items.find do |item|
-      item.name.downcase.include?(name.downcase)
-    end
+    @items.find { |item| item.name.downcase == name.downcase }
   end
 
-  def find_all_with_description(description)
-    @items.find_all do |item|
-      item.description.downcase.include?(description.downcase)
-    end
+  def find_all_with_description(desc)
+    @items.find_all { |item| item.description.downcase.include?(desc.downcase) }
   end
 
   def find_all_by_price(price)
-    @items.find_all do |item|
-      item.unit_price == price
-    end
+    @items.find_all { |item| item.unit_price.to_f == price }
   end
 
   def find_all_by_price_in_range(range)
-    @items.find_all do |item|
-      range.include?(item.unit_price)
-    end
+    @items.find_all { |item| range.include?(item.unit_price) }
   end
 
-  def find_all_by_merchant_id(id)
-    @items.find_all do |item|
-      item.merchant_id == id
-    end
+  def find_all_by_merchant_id(merch_id)
+    @items.find_all { |item| item.merchant_id == merch_id }
   end
 
   def inspect
-  "#<#{self.class} #{@items.size} rows>"
+    "#<#{self.class} #{@items.size} rows>"
   end
 
 end

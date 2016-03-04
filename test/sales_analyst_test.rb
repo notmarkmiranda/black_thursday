@@ -19,8 +19,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_finds_the_standard_deviation
-    # puts @merch_ids
-    assert_equal 2.16, @sa.average_items_per_merchant_standard_deviation
+    assert_equal 2.16, @sa.average_items_per_merchant_standard_deviation(12334113)
   end
 
   def test_it_finds_which_merchants_sell_the_most_items

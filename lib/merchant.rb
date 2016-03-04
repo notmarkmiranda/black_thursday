@@ -1,28 +1,24 @@
-require_relative 'sales_engine'
-require 'csv'
+require_relative 'merchant_repository'
+require_relative 'item_repository'
 
 class Merchant
-  attr_reader :id, :name, :items
-  attr_accessor :repo
+  attr_accessor :merchant_data, :merchant_repository
 
-  def initialize(merchant, repo = nil, engine = nil)
-    @id = merchant[:id].to_i
-    @name = merchant[:name]
-    @repo = repo
-    @items = []
-    @engine = engine
+  def initialize(merchant_data, merchant_repository)
+    @merchant_data = merchant_data
+    @merchant_repository = merchant_repository
+  end
+
+  def id
+    merchant_data[0].to_i
+  end
+
+  def name
+    merchant_data[1]
   end
 
   def items
-
-    # @items = self.repo.engine.merchants.find_by_id(id).items
-    #
-    a = self.repo
-    puts a
+    merchant_repository.engine.items.find_all_by_merchant_id(id)
   end
-
-  # look at the item repository
-  # for your id
-  # return all the items that are associated with that id
 
 end
