@@ -1,54 +1,44 @@
 require_relative 'item'
-require 'bigdecimal'
-
 class ItemRepository
+  attr_accessor :items, :engine
 
-  def initialize(items = [])
-    @items = items
-  end
-
-  def find_size
-    @items.count
+  def initialize(items_data, engine)
+    @items = items_data.map do |item|
+      Item.new(item, self)
+    end
+    @engine = engine
   end
 
   def all
     @items
   end
 
-  def find_by_id(num)
-    @items.find do |item|
-      item.id == num
-    end
+  def find_by_id(id)
+    @items.find { |item| item.id == id.to_i }
   end
 
   def find_by_name(name)
-    @items.find do |item|
-      item.name.downcase.include?(name.downcase)
-    end
+    @items.find { |item| item.name.downcase == name.downcase }
   end
 
-  def find_all_with_description(description)
-    @items.find_all do |item|
-      item.description.downcase.include?(description.downcase)
-    end
+  def find_all_with_description(desc)
+    @items.find_all { |item| item.description.downcase.include?(desc.downcase) }
   end
 
   def find_all_by_price(price)
-    @items.find_all do |item|
-      item.unit_price == price
-    end
+    @items.find_all { |item| item.unit_price.to_f == price }
   end
 
-  def find_all_by_price_in_range(low, high)
-    @items.find_all do |item|
-      item.unit_price > low && item.unit_price < high
-    end
+  def find_all_by_price_in_range(range)
+    @items.find_all { |item| range.include?(item.unit_price) }
   end
 
-  def find_all_by_merchant_id(id)
-    @items.find_all do |item|
-      item.merchant_id == id
-    end
+  def find_all_by_merchant_id(merch_id)
+    @items.find_all { |item| item.merchant_id == merch_id }
+  end
+
+  def inspect
+    "#<#{self.class} #{@items.size} rows>"
   end
 
 end

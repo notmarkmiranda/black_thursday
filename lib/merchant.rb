@@ -1,25 +1,24 @@
-require 'csv'
+require_relative 'merchant_repository'
+require_relative 'item_repository'
 
 class Merchant
-  attr_reader :id, :name
-  # @contents = CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol)
+  attr_accessor :merchant_data, :merchant_repository
 
-  def initialize(merchant)
-    @id = merchant[:id]
-    @name = merchant[:name]
-    # append_to_file(hash)
+  def initialize(merchant_data, merchant_repository)
+    @merchant_data = merchant_data
+    @merchant_repository = merchant_repository
   end
 
-  # def append_to_file(hash)
-  #   date = Date.today.strftime("%Y-%m-%d")
-  #   hash[:created_at] = date
-  #   hash[:updated_at] = date
-  #
-  #   CSV.open("./data/merchants.csv", "a+", headers:true, header_converters: :symbol) do |row|
-  #     row << hash.values
-  #   end
-  #   File.read("./data/merchants.csv")
-  # end
+  def id
+    merchant_data[0].to_i
+  end
 
+  def name
+    merchant_data[1]
+  end
+
+  def items
+    merchant_repository.engine.items.find_all_by_merchant_id(id)
+  end
 
 end

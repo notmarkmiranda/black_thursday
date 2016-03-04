@@ -1,53 +1,34 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require './lib/merchant_repository'
+require_relative 'test_helper'
+require_relative '../lib/merchant_repository'
 
 class MerchantRepositoryTest < Minitest::Test
 
   def setup
-    @merchant_1 = Merchant.new({:id => 1, :name => "Turing School"})
-    @merchant_2 = Merchant.new({:id => 2, :name => "Galvanize"})
-    @mr = MerchantRepository.new([@merchant_1, @merchant_2])
+    se = SalesEngine.from_csv({
+      :items => "./fixtures/items3.csv",
+      :merchants => "./fixtures/merchants3.csv"
+      })
+    @m_repo = se.merchants
   end
 
-  def test_can_create_blank_merchant_repo
-    mr2 = MerchantRepository.new
-    assert_equal [], mr2.merchant
+  def test_can_return_all_merchants
+    assert_equal 4, @m_repo.all.size
   end
 
-  def test_can_accept_new_merchants
-    refute @mr.merchant.empty?
+  def test_can_find_merchant_by_id
+    assert_equal "Shopin1901", @m_repo.find_by_id(12334105).name
   end
 
-  def test_all_returns_all_known_instances
-    assert_equal [@merchant_1, @merchant_2], @mr.all
+  def test_can_find_merchant_by_name
+    assert_equal 12334105, @m_repo.find_by_name("shopin1901").id
   end
 
-  def test_find_by_id_can_return_nil
-    assert_equal nil, @mr.find_by_id(3)
+  def test_can_find_all_merchants_by_name
+    assert_equal ["Shopin1901"], @m_repo.find_all_by_name("pin").map { |merch| merch.name }
   end
 
-  def test_find_by_id_can_find_instance
-    assert_equal @merchant_1, @mr.find_by_id(1)
-  end
-
-  def test_find_by_name_can_return_nil
-    assert_equal nil, @mr.find_by_name("costco")
-  end
-
-  def test_find_by_name_can_find_instance
-    assert_equal @merchant_1, @mr.find_by_name("Turing")
-  end
-
-  def test_find_all_by_name_can_return_blank
-    assert_equal [], @mr.find_all_by_name("walmart")
-  end
-
-  def test_find_all_by_name_can_return_instance
-    merchant_3 = Merchant.new({:id => 3, :name => "Galvanize Boulder"})
-    mr2 = MerchantRepository.new([@merchant_1, @merchant_2, merchant_3])
-
-    assert_equal [@merchant_2, merchant_3], mr2.find_all_by_name("Galvanize")
+  def test_it_inspects
+    assert_equal "#<MerchantRepository 4 rows>", @m_repo.inspect
   end
 
 end
