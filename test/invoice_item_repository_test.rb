@@ -8,7 +8,9 @@ class InvoiceItemRepositoryTest < Minitest::Test
       :items => "./fixtures/items.csv",
       :merchants => "./fixtures/merchants.csv",
       :invoices => "./fixtures/invoices.csv",
-      :invoice_items => "./fixtures/invoice_items.csv"
+      :invoice_items => "./fixtures/invoice_items.csv",
+      :transactions => "./fixtures/transactions.csv",
+      :customers => "./fixtures/customers.csv"
       })
       @iirepo = se.invoice_items
   end

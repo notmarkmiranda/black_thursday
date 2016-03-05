@@ -9,7 +9,10 @@ class InvoiceTest < Minitest::Test
     se = SalesEngine.from_csv({
       :items => "./fixtures/items.csv",
       :merchants => "./fixtures/merchants.csv",
-      :invoices => "./fixtures/invoices.csv"
+      :invoices => "./fixtures/invoices.csv",
+      :invoice_items => "./fixtures/invoice_items.csv",
+      :transactions => "./fixtures/transactions.csv",
+      :customers => "./fixtures/customers.csv"
       })
     @invoice_repo = se.invoices
     @invoice = @invoice_repo.all[0]

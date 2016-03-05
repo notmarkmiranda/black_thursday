@@ -88,7 +88,7 @@ class SalesAnalyst
   def top_merchants_by_invoice_count
     baseline = (average_invoices_per_merchant +
                 average_invoices_per_merchant_standard_deviation * 2)
-    counts = @se.merchants.all.find_all do |merchant|
+    @se.merchants.all.find_all do |merchant|
       merchant.invoices.size > baseline
     end
   end
@@ -96,7 +96,7 @@ class SalesAnalyst
   def bottom_merchants_by_invoice_count
     baseline = (average_invoices_per_merchant -
                 average_invoices_per_merchant_standard_deviation *  2)
-    counts = @se.merchants.all.find_all do |merchant|
+    @se.merchants.all.find_all do |merchant|
       merchant.invoices.size < baseline
     end
   end

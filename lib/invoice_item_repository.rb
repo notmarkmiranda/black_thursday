@@ -1,4 +1,3 @@
-require_relative 'sales_engine'
 require_relative 'invoice_item'
 
 class InvoiceItemRepository
