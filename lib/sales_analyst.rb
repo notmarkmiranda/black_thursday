@@ -50,11 +50,9 @@ class SalesAnalyst
   end
 
   def average_average_price_per_merchant
-
     prices = @se.merchants.all.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
-
     (prices.reduce(:+)/prices.length).round(2)
   end
 
@@ -69,6 +67,21 @@ class SalesAnalyst
     @se.items.find_all_by_price_in_range(range)
   end
 
-  
+  def average_invoices_per_merchant
+    invoices = @se.merchants.all.map do |merchant|
+      merchant.invoices.size.to_f
+    end
+    (invoices.reduce(:+)/invoices.size).round(2)
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    ave = average_invoices_per_merchant
+    n = @se.merchants.all.size - 1
+    sum_of_squares = @se.merchants.all.map do |merchant|
+      (merchant.invoices.size.to_f - ave)**2
+    end.reduce(:+) / n
+    Math.sqrt(sum_of_squares).round(2)
+
+  end
 
 end

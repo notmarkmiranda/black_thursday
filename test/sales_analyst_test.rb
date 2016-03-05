@@ -41,4 +41,12 @@ class SalesAnalystTest < Minitest::Test
     assert_equal result, @sa.golden_items.map { |item| item.name}
   end
 
+  def test_average_invoices_per_merchant_returns_average_number_invoices_per_merchant
+    assert_equal 12.50, @sa.average_invoices_per_merchant
+  end
+
+  def test_average_invoices_per_merchant_standard_deviation_returns_the_standard_deviation
+    assert_equal 5, @sa.average_invoices_per_merchant_standard_deviation
+  end
+
 end
