@@ -1,5 +1,6 @@
 require_relative 'test_helper'
 require_relative '../lib/sales_analyst'
+require_relative '../lib/sales_engine'
 require 'pry'
 
 class SalesAnalystTest < Minitest::Test
@@ -7,7 +8,8 @@ class SalesAnalystTest < Minitest::Test
   def setup
     se = SalesEngine.from_csv({
       :items => "./fixtures/items3.csv",
-      :merchants => "./fixtures/merchants3.csv"
+      :merchants => "./fixtures/merchants3.csv",
+      :invoices => "./fixtures/invoices3.csv"
       })
 
     @sa = SalesAnalyst.new(se)

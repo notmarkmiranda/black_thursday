@@ -1,6 +1,5 @@
 require 'csv'
 require_relative 'merchant'
-require_relative 'sales_engine'
 
 class MerchantRepository
   attr_accessor :merchants, :engine
@@ -13,20 +12,21 @@ class MerchantRepository
   end
 
   def all
-    @merchants
+    merchants
   end
 
   def find_by_id(id)
-    @merchants.find { |merchant| merchant.id == id.to_i }
+    merchants.find { |merchant| merchant.id == id.to_i }
   end
 
   def find_by_name(name)
-    @merchants.find { |merchant| merchant.name.downcase.include?(name.downcase) }
+    merchants.find { |merchant| merchant.name.downcase.include?(name.downcase) }
   end
 
   def find_all_by_name(name)
     merchants.find_all { |merchant| merchant.name.downcase.include?(name.downcase) }
   end
+
 
   def inspect
   "#<#{self.class} #{@merchants.size} rows>"

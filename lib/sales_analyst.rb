@@ -67,7 +67,8 @@ class SalesAnalyst
     base = ave + (sd*2)
     range = (base..BigDecimal::INFINITY)
     @se.items.find_all_by_price_in_range(range)
-
   end
+
+  
 
 end
