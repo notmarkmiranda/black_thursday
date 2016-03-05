@@ -49,4 +49,19 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 5, @sa.average_invoices_per_merchant_standard_deviation
   end
 
+  def test_it_finds_merchants_with_invoice_count_two_standard_deviations_above_average
+    assert_equal [] , @sa.top_merchants_by_invoice_count
+  end
+
+  def test_it_finds_merchants_with_invoice_count_two_standard_deviations_below_average
+    assert_equal [] , @sa.bottom_merchants_by_invoice_count
+  end
+
+  def test_it_finds_which_days_are_invoices_created_at_more_than_one_standard_deviation_above_the_mean
+    assert_equal ["Friday"] , @sa.top_days_by_invoice_count
+  end
+
+  def test_it_finds_the_percentage_of_invoices_with_given_status
+    assert_equal 34.0, @sa.invoice_status(:pending)
+  end
 end
