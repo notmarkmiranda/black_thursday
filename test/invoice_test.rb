@@ -44,4 +44,9 @@ class InvoiceTest < Minitest::Test
     time = Time.strptime("2014-03-15", "%Y-%m-%d")
     assert_equal time, @invoice.updated_at
   end
+
+  # def test_items_can_return_items_on_invoice
+  #   assert_equal [7], @invoice.items
+  # end
+
 end

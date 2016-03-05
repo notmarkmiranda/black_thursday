@@ -35,5 +35,10 @@ class Transaction
     Time.parse(transaction_data[6])
   end
 
+  def invoice
+    iid = self.invoice_id
+    transaction_repository.engine.invoices.find_by_id(iid)
+  end
+
 
 end
