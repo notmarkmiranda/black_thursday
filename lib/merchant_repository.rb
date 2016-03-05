@@ -16,15 +16,21 @@ class MerchantRepository
   end
 
   def find_by_id(id)
-    merchants.find { |merchant| merchant.id == id.to_i }
+    merchants.find do |merchant|
+      merchant.id == id.to_i
+    end
   end
 
   def find_by_name(name)
-    merchants.find { |merchant| merchant.name.downcase.include?(name.downcase) }
+    merchants.find do |merchant|
+      merchant.name.downcase.include?(name.downcase)
+    end
   end
 
   def find_all_by_name(name)
-    merchants.find_all { |merchant| merchant.name.downcase.include?(name.downcase) }
+    merchants.find_all do |merchant|
+      merchant.name.downcase.include?(name.downcase)
+    end
   end
 
 

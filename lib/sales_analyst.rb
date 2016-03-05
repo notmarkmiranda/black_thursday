@@ -33,7 +33,8 @@ class SalesAnalyst
   end
 
   def merchants_with_high_item_count
-    baseline = average_items_per_merchant + average_items_per_merchant_standard_deviation
+    baseline = (average_items_per_merchant +
+                average_items_per_merchant_standard_deviation)
     # is this a place where we can use the items method from the merchant class?
     high_merchants = find_merchant_ids.find_all do |id|
       id if @se.items.find_all_by_merchant_id(id).size > baseline
@@ -85,14 +86,16 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
-    baseline = (average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation*2)
+    baseline = (average_invoices_per_merchant +
+                average_invoices_per_merchant_standard_deviation * 2)
     counts = @se.merchants.all.find_all do |merchant|
       merchant.invoices.size > baseline
     end
   end
 
   def bottom_merchants_by_invoice_count
-    baseline = (average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation*2)
+    baseline = (average_invoices_per_merchant -
+                average_invoices_per_merchant_standard_deviation *  2)
     counts = @se.merchants.all.find_all do |merchant|
       merchant.invoices.size < baseline
     end
