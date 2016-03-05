@@ -5,14 +5,17 @@ class SalesEngineTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items3.csv",
-      :merchants => "./fixtures/merchants3.csv",
-      :invoices => "./fixtures/invoices3.csv"
+      :items => "./fixtures/items.csv",
+      :merchants => "./fixtures/merchants.csv",
+      :invoices => "./fixtures/invoices.csv",
+      :invoice_items => "./fixtures/invoice_items.csv",
+      :transactions => "./fixtures/transactions.csv",
+      :customers => "./fixtures/customers.csv"
       })
-    @m_repo = se.merchants
-    @i_repo = se.items
-    @inv_repo = se.invoices
-
+      @m_repo = se.merchants
+      @i_repo = se.items
+      @inv_repo = se.invoices
+      @iirepo = se.invoice_items
   end
 
   def test_items_returns_instance_of_all_merchant_items

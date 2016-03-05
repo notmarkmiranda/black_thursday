@@ -24,5 +24,11 @@ class Merchant
     merchant_repository.engine.invoices.find_all_by_merchant_id(self.id)
   end
 
+  def customers
+    invoices.map do |invoice|
+      invoice.customer
+    end.uniq
+  end
+
 
 end

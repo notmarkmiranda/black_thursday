@@ -8,7 +8,6 @@ class InvoiceRepository
     @invoices = invoices_data.map do |invoice|
       Invoice.new(invoice, self)
     end
-
   end
 
   def all

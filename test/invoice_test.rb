@@ -7,9 +7,12 @@ class InvoiceTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items3.csv",
-      :merchants => "./fixtures/merchants3.csv",
-      :invoices => "./fixtures/invoices3.csv"
+      :items => "./fixtures/items.csv",
+      :merchants => "./fixtures/merchants.csv",
+      :invoices => "./fixtures/invoices.csv",
+      :invoice_items => "./fixtures/invoice_items.csv",
+      :transactions => "./fixtures/transactions.csv",
+      :customers => "./fixtures/customers.csv"
       })
     @invoice_repo = se.invoices
     @invoice = @invoice_repo.all[0]
@@ -41,4 +44,9 @@ class InvoiceTest < Minitest::Test
     time = Time.strptime("2014-03-15", "%Y-%m-%d")
     assert_equal time, @invoice.updated_at
   end
+
+  # def test_items_can_return_items_on_invoice
+  #   assert_equal [7], @invoice.items
+  # end
+
 end
