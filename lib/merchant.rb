@@ -1,4 +1,3 @@
-require_relative 'merchant_repository'
 require_relative 'item_repository'
 
 class Merchant
@@ -20,5 +19,10 @@ class Merchant
   def items
     merchant_repository.engine.items.find_all_by_merchant_id(id)
   end
+
+  def invoices
+    merchant_repository.engine.invoices.find_all_by_merchant_id(self.id)
+  end
+
 
 end

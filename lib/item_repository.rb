@@ -1,4 +1,5 @@
 require_relative 'item'
+
 class ItemRepository
   attr_accessor :items, :engine
 
@@ -10,31 +11,31 @@ class ItemRepository
   end
 
   def all
-    @items
+    items
   end
 
   def find_by_id(id)
-    @items.find { |item| item.id == id.to_i }
+    items.find { |item| item.id == id.to_i }
   end
 
   def find_by_name(name)
-    @items.find { |item| item.name.downcase == name.downcase }
+    items.find { |item| item.name.downcase == name.downcase }
   end
 
   def find_all_with_description(desc)
-    @items.find_all { |item| item.description.downcase.include?(desc.downcase) }
+    items.find_all { |item| item.description.downcase.include?(desc.downcase) }
   end
 
   def find_all_by_price(price)
-    @items.find_all { |item| item.unit_price.to_f == price }
+    items.find_all { |item| item.unit_price.to_f == price }
   end
 
   def find_all_by_price_in_range(range)
-    @items.find_all { |item| range.include?(item.unit_price) }
+    items.find_all { |item| range.include?(item.unit_price) }
   end
 
   def find_all_by_merchant_id(merch_id)
-    @items.find_all { |item| item.merchant_id == merch_id }
+    items.find_all { |item| item.merchant_id == merch_id }
   end
 
   def inspect

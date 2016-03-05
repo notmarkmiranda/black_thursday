@@ -38,7 +38,7 @@ class Item
   end
 
   def merchant
-    @item_repository.engine.merchants.find_by_id(self.merchant_id)
+    item_repository.engine.merchants.find_by_id(self.merchant_id)
   end
 
 end
