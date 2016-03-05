@@ -1,4 +1,5 @@
 require_relative 'sales_engine'
+require 'pry'
 
 class SalesAnalyst
   attr_reader :se, :merch_ids
@@ -81,7 +82,62 @@ class SalesAnalyst
       (merchant.invoices.size.to_f - ave)**2
     end.reduce(:+) / n
     Math.sqrt(sum_of_squares).round(2)
-
   end
+
+  def top_merchants_by_invoice_count
+    baseline = (average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation*2)
+    counts = @se.merchants.all.find_all do |merchant|
+      merchant.invoices.size > baseline
+    end
+  end
+
+  def bottom_merchants_by_invoice_count
+    baseline = (average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation*2)
+    counts = @se.merchants.all.find_all do |merchant|
+      merchant.invoices.size < baseline
+    end
+  end
+
+  # def best_weekdays
+  #   weekdays = @dates.map do |date|
+  #     Date::DAYNAMES[date.to_date.wday]
+  #   end
+  #   daily = weekdays.group_by do |weekday|
+  #     weekday
+  #   end
+  #   daily.sort_by do |day, instances|
+  #      instances.count
+  #   end.reverse!
+  # end
+
+  def top_days_by_invoice_count
+    ave = @se.invoices.all.size / 7.0
+
+    weekdays = @se.merchants.all.map do |merchant|
+      merchant.invoices.map {|invoice| Date::DAYNAMES[invoice.created_at.wday]}
+    end.flatten
+    daily = Hash.new(0)
+
+    weekdays.each{ |weekday| daily[weekday]+=1 }
+
+    sum_of_squares = daily.values.map do |count|
+      (count - ave)**2
+    end.reduce(:+)/6
+    sd = Math.sqrt(sum_of_squares).round(2)
+
+    baseline = ave + sd
+    result = []
+    daily.each_pair do |day, count|
+      result << day if count > baseline
+    end
+    result
+  end
+
+  def invoice_status(status)
+    total = @se.invoices.all.size.to_f
+    total_w_status = @se.invoices.find_all_by_status(status).size
+    ((total_w_status / total)*100).round(2)
+  end
+
 
 end
