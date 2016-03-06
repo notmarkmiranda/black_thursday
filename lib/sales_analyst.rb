@@ -3,9 +3,9 @@ require 'pry'
 
 class SalesAnalyst
   attr_reader :se, :merch_ids
+
   def initialize(se)
     @se = se
-
   end
 
   def average_items_per_merchant
@@ -101,28 +101,13 @@ class SalesAnalyst
     end
   end
 
-  # def best_weekdays
-  #   weekdays = @dates.map do |date|
-  #     Date::DAYNAMES[date.to_date.wday]
-  #   end
-  #   daily = weekdays.group_by do |weekday|
-  #     weekday
-  #   end
-  #   daily.sort_by do |day, instances|
-  #      instances.count
-  #   end.reverse!
-  # end
-
   def top_days_by_invoice_count
     ave = @se.invoices.all.size / 7.0
-
     weekdays = @se.merchants.all.map do |merchant|
       merchant.invoices.map {|invoice| Date::DAYNAMES[invoice.created_at.wday]}
     end.flatten
     daily = Hash.new(0)
-
     weekdays.each{ |weekday| daily[weekday]+=1 }
-
     sum_of_squares = daily.values.map do |count|
       (count - ave)**2
     end.reduce(:+)/6
@@ -142,5 +127,12 @@ class SalesAnalyst
     ((total_w_status / total)*100).round(2)
   end
 
+  def total_revenue_by_date(date)
+    ids = @se.invoices.find_all_by_date(date).map { |invoice| invoice.id }
+    iis = ids.map{ |id| @se.invoice_items.find_all_by_invoice_id(id) }.flatten
+    iis.map do |ii|
+      ii.quantity * ii.unit_price
+    end.reduce(:+)
+  end
 
 end

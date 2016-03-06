@@ -9,18 +9,18 @@ class ItemRepositoryTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items.csv",
-      :merchants => "./fixtures/merchants.csv",
-      :invoices => "./fixtures/invoices.csv",
-      :invoice_items => "./fixtures/invoice_items.csv",
-      :transactions => "./fixtures/transactions.csv",
-      :customers => "./fixtures/customers.csv"
+      :items => "./data/items.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/invoice_items.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
       })
     @i_repo = se.items
   end
 
   def test_can_return_all_items
-    assert_equal 12, @i_repo.all.size
+    assert_equal 1367, @i_repo.all.size
   end
 
   def test_can_find_items_by_id
@@ -36,19 +36,19 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_by_price
-    assert_equal [263395237], @i_repo.find_all_by_price(12).map { |item| item.id }
+    assert_equal 41, @i_repo.find_all_by_price(12).size
   end
 
   def test_can_find_all_items_by_price_in_range
-    assert_equal [263395237, 263395617, 263395721], @i_repo.find_all_by_price_in_range(11.99..13.51).map{ |item| item.id }
+    assert_equal 59, @i_repo.find_all_by_price_in_range(11.99..13.51).size
   end
 
   def test_can_find_all_by_merchant_id
-    assert_equal [263395617, 263395721], @i_repo.find_all_by_merchant_id(12334105).map { |item| item.id }
+    assert_equal [263396209, 263500440, 263501394], @i_repo.find_all_by_merchant_id(12334105).map { |item| item.id }
   end
 
   def test_it_inspects
-    assert_equal "#<ItemRepository 12 rows>", @i_repo.inspect
+    assert_equal "#<ItemRepository 1367 rows>", @i_repo.inspect
   end
 
 end

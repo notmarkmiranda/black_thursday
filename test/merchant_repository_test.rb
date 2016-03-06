@@ -6,18 +6,18 @@ class MerchantRepositoryTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items.csv",
-      :merchants => "./fixtures/merchants.csv",
-      :invoices => "./fixtures/invoices.csv",
-      :invoice_items => "./fixtures/invoice_items.csv",
-      :transactions => "./fixtures/transactions.csv",
-      :customers => "./fixtures/customers.csv"
+      :items => "./data/items.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/invoice_items.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
       })
     @m_repo = se.merchants
   end
 
   def test_can_return_all_merchants
-    assert_equal 4, @m_repo.all.size
+    assert_equal 475, @m_repo.all.size
   end
 
   def test_can_find_merchant_by_id
@@ -29,11 +29,12 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_merchants_by_name
-    assert_equal ["Shopin1901"], @m_repo.find_all_by_name("pin").map { |merch| merch.name }
+    result = ["Shopin1901", "TheLilPinkBowtique", "77PINS", "HooknSpindle", "TIGHTpinch", "ShopAtPinkFlamingo"]
+    assert_equal result, @m_repo.find_all_by_name("pin").map { |merch| merch.name }
   end
 
   def test_it_inspects
-    assert_equal "#<MerchantRepository 4 rows>", @m_repo.inspect
+    assert_equal "#<MerchantRepository 475 rows>", @m_repo.inspect
   end
 
 end

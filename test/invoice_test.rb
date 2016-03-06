@@ -7,12 +7,12 @@ class InvoiceTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items.csv",
-      :merchants => "./fixtures/merchants.csv",
-      :invoices => "./fixtures/invoices.csv",
-      :invoice_items => "./fixtures/invoice_items.csv",
-      :transactions => "./fixtures/transactions.csv",
-      :customers => "./fixtures/customers.csv"
+      :items => "./data/items.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/invoice_items.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
       })
     @invoice_repo = se.invoices
     @invoice = @invoice_repo.all[0]
@@ -28,7 +28,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_can_return_the_merchant_id_of_the_invoice
-    assert_equal 12334105, @invoice.merchant_id
+    assert_equal 12335938, @invoice.merchant_id
   end
 
   def test_can_return_the_status_of_invoice

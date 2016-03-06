@@ -30,6 +30,9 @@ class InvoiceRepository
     @invoices.find_all { |invoice| invoice.status == status.to_sym}
   end
 
+  def find_all_by_date(date)
+    @invoices.find_all { |invoice| invoice.created_at == date }
+  end
   def inspect
   "#<#{self.class} #{@invoices.size} rows>"
   end
