@@ -8,12 +8,12 @@ class ItemTest < Minitest::Test
 
   def setup
     se = SalesEngine.from_csv({
-      :items => "./fixtures/items.csv",
-      :merchants => "./fixtures/merchants.csv",
-      :invoices => "./fixtures/invoices.csv",
-      :invoice_items => "./fixtures/invoice_items.csv",
-      :transactions => "./fixtures/transactions.csv",
-      :customers => "./fixtures/customers.csv"
+      :items => "./data/items.csv",
+      :merchants => "./data/merchants.csv",
+      :invoices => "./data/invoices.csv",
+      :invoice_items => "./data/invoice_items.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
       })
     @items_repo = se.items
     @item = @items_repo.all[0]
@@ -46,12 +46,12 @@ class ItemTest < Minitest::Test
   end
 
   def test_it_returns_the_integer_merchant_id_of_the_item
-    assert_equal 12334114, @item.merchant_id
+    assert_equal 12334141, @item.merchant_id
   end
 
   def test_merchant_item_can_find_its_merchant
     item = @items_repo.find_by_id(263395237)
-    assert_equal "Mark Miranda", item.merchant.name
+    assert_equal "jejum", item.merchant.name
   end
 
 end
