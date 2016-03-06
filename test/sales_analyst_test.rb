@@ -73,7 +73,11 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_returns_the_given_nimber_of_top_revenue_earners
-    assert_equal []. @sa.top_revenue_earners(3)
-    here!
+    assert_equal "HoggardWoodworks", @sa.top_revenue_earners(3).first.name
+    assert_equal 20, @sa.top_revenue_earners.size
+  end
+
+  def test_it_returns_the_returns_the_merchants_ranked_by_total_revenue
+
   end
 end

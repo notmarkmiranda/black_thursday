@@ -135,4 +135,50 @@ class SalesAnalyst
     end.reduce(:+)
   end
 
+  def revenue_per_merchant(id)
+    invoices = @se.invoices.find_all_by_merchant_id(id)
+    totals = invoices.map{|invoice| invoice.total }.reject{|amt| amt.nil? }
+    totals.reduce(:+)
+  end
+
+  def top_revenue_earners(n = 20)
+    merchants_ranked_by_revenue[0..(n-1)]
+    #sorted[0..(n-1)].map{|pair| pair[1] }
+    #find the total revenue for each merchant in array of arrays where [0]
+    #is the revenue and [1] is the merchant
+    #sort_by element [0]
+    #return the first n elements at position [1]
+  end
+
+  def merchants_ranked_by_revenue
+    ids = @se.merchants.all.map{ |merchant| merchant.id }.reject{|id| revenue_per_merchant(id).nil? }
+    zipped = ids.map{|id| revenue_per_merchant(id) }.zip(ids.map{|id| @se.merchants.find_by_id(id) })
+    ranked = zipped.sort_by{|pair| pair[0] }.reverse
+    ranked.map{ |pair| pair[1] }
+  end
+
+  def merchants_with_pending_invoices
+    "pizza"
+  end
+
+  def merchants_with_only_one_item
+    "pizza"
+  end
+
+  def merchants_with_only_one_item_registered_in_month
+    "pizza"
+  end
+
+  def revenue_by_merchant
+    "pizza"
+  end
+
+  def most_sold_item_for_merchant
+    "pizza"
+  end
+
+  def best_item_for_merchant
+    "pizza"
+  end
+
 end
