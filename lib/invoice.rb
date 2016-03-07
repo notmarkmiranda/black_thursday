@@ -71,6 +71,7 @@ class Invoice
         item.quantity * item.unit_price
       end.reduce(:+)
     end
+    #what should happen if the invoice isn't paid in full
   end
 
 end

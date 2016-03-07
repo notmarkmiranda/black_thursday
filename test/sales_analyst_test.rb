@@ -72,12 +72,34 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 41498.12, @sa.total_revenue_by_date(date).to_f
   end
 
+  def test_it_finds_the_revenue_per_merchant
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 0.0, @sa2.revenue_by_merchant(12334165).to_f
+  end
+
   def test_it_returns_the_given_nimber_of_top_revenue_earners
-    assert_equal "HoggardWoodworks", @sa.top_revenue_earners(3).first.name
-    assert_equal 20, @sa.top_revenue_earners.size
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal "handicraftcallery", @sa2.top_revenue_earners(3).first.name
+    assert_equal 20, @sa2.top_revenue_earners.size
   end
 
   def test_it_returns_the_returns_the_merchants_ranked_by_total_revenue
-
+    skip
   end
 end

@@ -135,9 +135,16 @@ class SalesAnalyst
     end.reduce(:+)
   end
 
-  def revenue_per_merchant(id)
-    invoices = @se.invoices.find_all_by_merchant_id(id)
-    totals = invoices.map{|invoice| invoice.total }.reject{|amt| amt.nil? }
+  def revenue_by_merchant(id)
+    invoices = @se.invoices.all.find_all{|invoice| invoice.merchant_id == id}
+    #returns the invoices associated with the merchant
+    totals = invoices.map do |invoice|
+      if invoice.is_paid_in_full?
+        invoice.total
+      else
+        BigDecimal.new(0)
+      end
+    end
     totals.reduce(:+)
   end
 
@@ -149,10 +156,16 @@ class SalesAnalyst
     #sort_by element [0]
     #return the first n elements at position [1]
   end
+  # @count > 0 ? @empty = false : @empty = true
 
   def merchants_ranked_by_revenue
-    ids = @se.merchants.all.map{ |merchant| merchant.id }.reject{|id| revenue_per_merchant(id).nil? }
-    zipped = ids.map{|id| revenue_per_merchant(id) }.zip(ids.map{|id| @se.merchants.find_by_id(id) })
+    ids = @se.merchants.all.map{ |merchant| merchant.id }#.reject{|id| revenue_by_merchant(id).nil? }
+    zipped = ids.map{|id| revenue_by_merchant(id) }.zip(ids.map{|id| @se.merchants.find_by_id(id) })
+    # array = [1,2,3,4,nil,5,6]
+    # array.map.with_index { |element, index| array[index] = 0 if element == nil }
+    zipped.map do |pairs|
+      pairs.map.with_index{ |pair, index| pairs[index] = BigDecimal.new(0) if pair == nil }
+    end
     ranked = zipped.sort_by{|pair| pair[0] }.reverse
     ranked.map{ |pair| pair[1] }
   end
@@ -169,9 +182,9 @@ class SalesAnalyst
     "pizza"
   end
 
-  def revenue_by_merchant
-    "pizza"
-  end
+  # def revenue_by_merchant
+  #   "pizza"
+  # end
 
   def most_sold_item_for_merchant
     "pizza"
