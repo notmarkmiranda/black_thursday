@@ -141,9 +141,24 @@ class SalesAnalystTest < Minitest::Test
       })
     @sa2 = SalesAnalyst.new(se2)
 
-    assert_equal 1,
+    assert_equal 2,
     @sa2.merchants_with_only_one_item_registered_in_month("January").size
     assert_equal Merchant,
-    @sa2.merchants_with_only_one_item_registered_in_month("January").first.class 
+    @sa2.merchants_with_only_one_item_registered_in_month("January").first.class
+  end
+
+  def test_it_returns_the_most_sold_item_for_a_merchant
+    skip
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 5, @sa2.most_sold_item_for_merchant(12334132).size
+    assert_equal Item, @sa2.most_sold_item_for_merchant(12334132).first.class
   end
 end

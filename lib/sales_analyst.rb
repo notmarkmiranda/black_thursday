@@ -166,8 +166,10 @@ class SalesAnalyst
 
   def merchants_with_pending_invoices
     pending_invoices = @se.invoices.find_all_by_status(:pending)
-    ids = pending_invoices.map{|invoice| invoice.merchant_id }
-    ids.map{|id| @se.merchants.find_by_id(id) }.uniq
+    ids = pending_invoices.map{|invoice| invoice.merchant_id }.uniq
+    ids.map{|id| @se.merchants.find_by_id(id) }
+    #can't figure out why this one isn't working, it misses the mark by
+    #about 20 merchants when running the spec harness.
   end
 
   def merchants_with_only_one_item
@@ -175,21 +177,34 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item_registered_in_month(month_name)
-    all_items = @se.merchants.all.map do |merchant|
+    #oops, I forgot I even made it, I am probobly supposed to call the above method here!
+    merchants_registered_in_month = @se.merchants.all.find_all do |merchant|
+      Date::MONTHNAMES[merchant.created_at.month] == month_name
+    end
+    all_items = merchants_registered_in_month.map do |merchant|
       merchant.items
     end
-    month_items = all_items.find_all do |items|
-      items.find_all do |item|
-        Date::MONTHNAMES[item.created_at.month] == month_name
-      end
-    end.flatten
-    merchant_ids = month_items.map{|item| item.merchant_id }.uniq!
-    merchant_ids.map{|id| @se.merchants.find_by_id(id) }
+    ones = all_items.keep_if{|items| items.size == 1 }.flatten
+    ids = ones.map{|item| item.merchant_id }
+    ids.map{|id| @se.merchants.find_by_id(id) }
+    # all_items = @se.merchants.all.map do |merchant|
+    #   merchant.items
+    # end
+    # month_items = all_items.find_all do |items|
+    #   items.find_all do |item|
+    #     Date::MONTHNAMES[item.created_at.month] == month_name
+    #   end
+    # end.reject{ |items| items.size == 1 }.flatten
+    # merchant_ids = month_items.map{|item| item.merchant_id }.uniq!
+    # merchant_ids.map{|id| @se.merchants.find_by_id(id) }
   end
 
 
-  def most_sold_item_for_merchant
-    "pizza"
+  def most_sold_item_for_merchant(merchant_id)
+    #get the merchants from their ids
+    #get the
+    #because there will be a tie, return an array of items
+    #
   end
 
   def best_item_for_merchant
