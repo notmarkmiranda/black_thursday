@@ -36,6 +36,10 @@ class Invoice
     @invoice_repository.engine.merchants.find_by_id(self.merchant_id)
   end
 
+  def invoice_items
+    invoice_repository.engine.invoice_items.find_all_by_merchant_id(self.id)
+  end
+
   def items
     invoice_repository.engine.invoice_items.
     find_all_by_invoice_id(self.id).map do |obj|
@@ -71,6 +75,11 @@ class Invoice
         item.quantity * item.unit_price
       end.reduce(:+)
     end
+    #what should happen if the invoice isn't paid in full
+  end
+
+  def all_failed_transactions?
+    transactions.none?{ |transaction| transaction.result == "success"}
   end
 
 end

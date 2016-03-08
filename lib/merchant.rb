@@ -16,6 +16,10 @@ class Merchant
     merchant_data[1]
   end
 
+  def created_at
+    Time.parse(merchant_data[2])
+  end
+
   def items
     merchant_repository.engine.items.find_all_by_merchant_id(id)
   end

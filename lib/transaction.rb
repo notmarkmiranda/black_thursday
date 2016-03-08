@@ -40,5 +40,9 @@ class Transaction
     transaction_repository.engine.invoices.find_by_id(iid)
   end
 
+  def merchant
+    invoice = @transaction_repository.engine.invoices.find_by_id(self.invoice_id)
+    @transaction_repository.engine.merchants.find_by_id(invoice.merchant_id)
+  end
 
 end

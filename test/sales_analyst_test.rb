@@ -72,8 +72,106 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 41498.12, @sa.total_revenue_by_date(date).to_f
   end
 
+  def test_it_finds_the_revenue_per_merchant
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 0.0, @sa2.revenue_by_merchant(12334165).to_f
+  end
+
   def test_it_returns_the_given_nimber_of_top_revenue_earners
-    assert_equal []. @sa.top_revenue_earners(3)
-    here!
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal "handicraftcallery", @sa2.top_revenue_earners(3).first.name
+    assert_equal 20, @sa2.top_revenue_earners.size
+  end
+
+  def test_it_finds_which_merchants_have_pending_invoices
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 6, @sa.merchants_with_pending_invoices.size
+    assert_equal Merchant, @sa.merchants_with_pending_invoices.first.class
+  end
+
+  def test_it_returns_merchants_with_only_one_item
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+
+    #this test takes only slightly longer against the full data set
+
+    assert_equal 10, @sa2.merchants_with_only_one_item.size
+    assert_equal Merchant, @sa2.merchants_with_only_one_item.first.class
+  end
+
+  def test_it_returns_merchants_with_only_one_item_registered_in_a_month
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+
+    assert_equal 2,
+    @sa2.merchants_with_only_one_item_registered_in_month("January").size
+    assert_equal Merchant,
+    @sa2.merchants_with_only_one_item_registered_in_month("January").first.class
+  end
+
+  def test_it_returns_the_most_sold_item_for_a_merchant
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 2, @sa.most_sold_item_for_merchant(12334132).size
+    assert_equal Item, @sa.most_sold_item_for_merchant(12334132).first.class
+  end
+
+  def test_it_returns_the_best_item_for_a_merchant
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal "best item", @sa2.most_sold_item_for_merchant(12334132).name
+    assert_equal Item, @sa2.most_sold_item_for_merchant(12334132).class
   end
 end

@@ -135,4 +135,90 @@ class SalesAnalyst
     end.reduce(:+)
   end
 
+  def revenue_by_merchant(id)
+    invoices = @se.invoices.all.find_all{|invoice| invoice.merchant_id == id}
+    #returns the invoices associated with the merchant
+    totals = invoices.map do |invoice|
+      if invoice.is_paid_in_full?
+        invoice.total
+      else
+        BigDecimal.new(0)
+      end
+    end
+    totals.reduce(:+)
+  end
+
+  def top_revenue_earners(n = 20)
+    merchants_ranked_by_revenue[0..(n-1)]
+  end
+
+  def merchants_ranked_by_revenue
+    ids = @se.merchants.all.map{ |merchant| merchant.id }
+    zipped = ids.map{|id| revenue_by_merchant(id) }.zip(ids.map{|id| @se.merchants.find_by_id(id) })
+    zipped.map do |pairs|
+      pairs.map.with_index{ |pair, index| pairs[index] = BigDecimal.new(0) if pair == nil }
+    end
+    ranked = zipped.sort_by{|pair| pair[0] }.reverse
+    ranked.map{ |pair| pair[1] }
+  end
+
+  def merchants_with_pending_invoices
+    failed_invoices = @se.invoices.all.keep_if do |invoice|
+      invoice.all_failed_transactions?
+    end
+    ids = failed_invoices.map do |invoice|
+      invoice.merchant_id
+    end.uniq
+    ids.map{|id| @se.merchants.find_by_id(id) }
+  end
+
+  def merchants_with_only_one_item
+    @se.merchants.all.find_all{|merchant| merchant.items.size == 1 }
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month_name)
+    merchants_registered_in_month = @se.merchants.all.find_all do |merchant|
+      Date::MONTHNAMES[merchant.created_at.month] == month_name
+    end
+    all_items = merchants_registered_in_month.map do |merchant|
+      merchant.items
+    end
+    ones = all_items.keep_if{|items| items.size == 1 }.flatten
+    ids = ones.map{|item| item.merchant_id }
+    ids.map{|id| @se.merchants.find_by_id(id) }
+  end
+
+
+  def most_sold_item_for_merchant(merchant_id)
+    invoices = @se.invoices.find_all_by_merchant_id(merchant_id).map do |invoice|
+      invoice
+    end
+    successful = invoices.reject do |invoice|
+      invoice.all_failed_transactions?
+    end
+    invoice_numbers = successful.map do |invoice|
+      invoice.id
+    end
+    ii_objects = invoice_numbers.map do |num|
+      @se.invoice_items.find_all_by_invoice_id(num)
+    end.flatten
+    sorted = ii_objects.sort_by { |ii| ii.quantity }.reverse
+    winners = sorted.reject{|invoice_item| invoice_item.quantity < sorted.first.quantity }
+    ids = winners.map{|invoice_item| invoice_item.item_id }
+    ids.map{|id| @se.items.find_by_id(id)}.uniq
+    binding.pry
+  end
+
+  def best_item_for_merchant(merchant_id)
+    if most_sold_item_for_merchant(merchant_id).size == 1
+      most_sold_item_for_merchant(merchant_id).pop
+    else
+
+
+      top = most_sold_item_for_merchant(merchant_id).sort_by do |item|
+        item.unit_price
+    end.reverse
+    end
+  end
+
 end
