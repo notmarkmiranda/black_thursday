@@ -153,10 +153,8 @@ class SalesAnalyst
   end
 
   def merchants_ranked_by_revenue
-    ids = @se.merchants.all.map{ |merchant| merchant.id }#.reject{|id| revenue_by_merchant(id).nil? }
+    ids = @se.merchants.all.map{ |merchant| merchant.id }
     zipped = ids.map{|id| revenue_by_merchant(id) }.zip(ids.map{|id| @se.merchants.find_by_id(id) })
-    # array = [1,2,3,4,nil,5,6]
-    # array.map.with_index { |element, index| array[index] = 0 if element == nil }
     zipped.map do |pairs|
       pairs.map.with_index{ |pair, index| pairs[index] = BigDecimal.new(0) if pair == nil }
     end
@@ -165,11 +163,13 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
-    pending_invoices = @se.invoices.find_all_by_status(:pending)
-    ids = pending_invoices.map{|invoice| invoice.merchant_id }.uniq
+    failed_invoices = @se.invoices.all.keep_if do |invoice|
+      invoice.all_failed_transactions?
+    end
+    ids = failed_invoices.map do |invoice|
+      invoice.merchant_id
+    end.uniq
     ids.map{|id| @se.merchants.find_by_id(id) }
-    #can't figure out why this one isn't working, it misses the mark by
-    #about 20 merchants when running the spec harness.
   end
 
   def merchants_with_only_one_item
@@ -177,7 +177,6 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item_registered_in_month(month_name)
-    #oops, I forgot I even made it, I am probobly supposed to call the above method here!
     merchants_registered_in_month = @se.merchants.all.find_all do |merchant|
       Date::MONTHNAMES[merchant.created_at.month] == month_name
     end
@@ -187,28 +186,39 @@ class SalesAnalyst
     ones = all_items.keep_if{|items| items.size == 1 }.flatten
     ids = ones.map{|item| item.merchant_id }
     ids.map{|id| @se.merchants.find_by_id(id) }
-    # all_items = @se.merchants.all.map do |merchant|
-    #   merchant.items
-    # end
-    # month_items = all_items.find_all do |items|
-    #   items.find_all do |item|
-    #     Date::MONTHNAMES[item.created_at.month] == month_name
-    #   end
-    # end.reject{ |items| items.size == 1 }.flatten
-    # merchant_ids = month_items.map{|item| item.merchant_id }.uniq!
-    # merchant_ids.map{|id| @se.merchants.find_by_id(id) }
   end
 
 
   def most_sold_item_for_merchant(merchant_id)
-    #get the merchants from their ids
-    #get the
-    #because there will be a tie, return an array of items
-    #
+    invoices = @se.invoices.find_all_by_merchant_id(merchant_id).map do |invoice|
+      invoice
+    end
+    successful = invoices.reject do |invoice|
+      invoice.all_failed_transactions?
+    end
+    invoice_numbers = successful.map do |invoice|
+      invoice.id
+    end
+    ii_objects = invoice_numbers.map do |num|
+      @se.invoice_items.find_all_by_invoice_id(num)
+    end.flatten
+    sorted = ii_objects.sort_by { |ii| ii.quantity }.reverse
+    winners = sorted.reject{|invoice_item| invoice_item.quantity < sorted.first.quantity }
+    ids = winners.map{|invoice_item| invoice_item.item_id }
+    ids.map{|id| @se.items.find_by_id(id)}.uniq
+    binding.pry
   end
 
-  def best_item_for_merchant
-    "pizza"
+  def best_item_for_merchant(merchant_id)
+    if most_sold_item_for_merchant(merchant_id).size == 1
+      most_sold_item_for_merchant(merchant_id).pop
+    else
+
+
+      top = most_sold_item_for_merchant(merchant_id).sort_by do |item|
+        item.unit_price
+    end.reverse
+    end
   end
 
 end
