@@ -99,7 +99,51 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 20, @sa2.top_revenue_earners.size
   end
 
-  def test_it_returns_the_returns_the_merchants_ranked_by_total_revenue
-    skip
+  def test_it_finds_which_merchants_have_pending_invoices
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+    assert_equal 6, @sa2.merchants_with_pending_invoices.size
+    assert_equal Merchant, @sa2.merchants_with_pending_invoices.first.class
+  end
+
+  def test_it_returns_merchants_with_only_one_item
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+
+    #this test takes only slightly longer against the full data set
+
+    assert_equal 10, @sa2.merchants_with_only_one_item.size
+    assert_equal Merchant, @sa2.merchants_with_only_one_item.first.class
+  end
+
+  def test_it_returns_merchants_with_only_one_item_registered_in_a_month
+    se2 = SalesEngine.from_csv({
+      :items => "./data/items.csv",
+      :merchants => "./fixtures/merchants_4.csv",
+      :invoices => "./fixtures/invoices_4.csv",
+      :invoice_items => "./fixtures/invoice_items_4.csv",
+      :transactions => "./data/transactions.csv",
+      :customers => "./data/customers.csv"
+      })
+    @sa2 = SalesAnalyst.new(se2)
+
+    assert_equal 1,
+    @sa2.merchants_with_only_one_item_registered_in_month("January").size
+    assert_equal Merchant,
+    @sa2.merchants_with_only_one_item_registered_in_month("January").first.class 
   end
 end

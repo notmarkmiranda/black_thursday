@@ -150,13 +150,7 @@ class SalesAnalyst
 
   def top_revenue_earners(n = 20)
     merchants_ranked_by_revenue[0..(n-1)]
-    #sorted[0..(n-1)].map{|pair| pair[1] }
-    #find the total revenue for each merchant in array of arrays where [0]
-    #is the revenue and [1] is the merchant
-    #sort_by element [0]
-    #return the first n elements at position [1]
   end
-  # @count > 0 ? @empty = false : @empty = true
 
   def merchants_ranked_by_revenue
     ids = @se.merchants.all.map{ |merchant| merchant.id }#.reject{|id| revenue_by_merchant(id).nil? }
@@ -171,20 +165,28 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
-    "pizza"
+    pending_invoices = @se.invoices.find_all_by_status(:pending)
+    ids = pending_invoices.map{|invoice| invoice.merchant_id }
+    ids.map{|id| @se.merchants.find_by_id(id) }.uniq
   end
 
   def merchants_with_only_one_item
-    "pizza"
+    @se.merchants.all.find_all{|merchant| merchant.items.size == 1 }
   end
 
-  def merchants_with_only_one_item_registered_in_month
-    "pizza"
+  def merchants_with_only_one_item_registered_in_month(month_name)
+    all_items = @se.merchants.all.map do |merchant|
+      merchant.items
+    end
+    month_items = all_items.find_all do |items|
+      items.find_all do |item|
+        Date::MONTHNAMES[item.created_at.month] == month_name
+      end
+    end.flatten
+    merchant_ids = month_items.map{|item| item.merchant_id }.uniq!
+    merchant_ids.map{|id| @se.merchants.find_by_id(id) }
   end
 
-  # def revenue_by_merchant
-  #   "pizza"
-  # end
 
   def most_sold_item_for_merchant
     "pizza"
