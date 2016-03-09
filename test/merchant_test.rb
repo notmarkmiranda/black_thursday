@@ -50,4 +50,12 @@ class MerchantTest < Minitest::Test
     assert_equal 10, @merchant.customers.size
   end
 
+  def test_can_return_only_successful_invoices
+    assert_equal 5, @merchant.successful_invoices.size
+  end
+
+  def test_can_return_revenue_for_single_merchant
+    assert_equal 73777.17, @merchant.revenue.to_f
+  end
+
 end

@@ -40,6 +40,11 @@ class Invoice
     invoice_repository.engine.invoice_items.find_all_by_merchant_id(self.id)
   end#returns 0 if the invoice_items_status_is_pending..is that right?
 
+  def invoice_items_invoice_id
+    invoice_repository.engine.invoice_items.find_all_by_invoice_id(self.id)
+  end#returns 0 if the invoice_items_status_is_pending..is that right?
+
+
   def items
     invoice_repository.engine.invoice_items.
     find_all_by_invoice_id(self.id).map do |obj|
