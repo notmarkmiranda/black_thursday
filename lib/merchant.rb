@@ -20,6 +20,10 @@ class Merchant
     Time.parse(merchant_data[2])
   end
 
+  def updated_at
+    Time.parse(merchant_data[3])
+  end
+
   def items
     merchant_repository.engine.items.find_all_by_merchant_id(id)
   end

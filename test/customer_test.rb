@@ -40,6 +40,3 @@ class CustomerTest < Minitest::Test
   end
 
 end
-
-#_id,first_name,last_name,created_at,updated_at
-#_1,Joey,Ondricka,2012-03-27 14:54:09 UTC,2012-03-27 14:54:09 UTC

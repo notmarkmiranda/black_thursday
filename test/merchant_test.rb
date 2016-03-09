@@ -1,5 +1,5 @@
 require_relative 'test_helper'
-require_relative '../lib/merchant'
+require_relative '../lib/sales_engine'
 
 class MerchantTest < Minitest::Test
 
@@ -16,6 +16,10 @@ class MerchantTest < Minitest::Test
     @merchant = @merchants_repo.all[0]
   end
 
+  def test_it_knows_its_repo
+    assert_equal MerchantRepository, @merchants_repo.class
+  end
+
   def test_it_can_return_ids
     assert_equal 12334105, @merchant.id
   end
@@ -24,5 +28,26 @@ class MerchantTest < Minitest::Test
     assert_equal "Shopin1901", @merchant.name
   end
 
+  def test_it_can_return_created_at
+    time = Time.strptime("2010-12-10 00:00:00 -0700", "%Y-%m-%d %H:%M:%S %Z")
+    assert_equal time, @merchant.created_at
+  end
+
+  def test_it_can_return_updated_at
+    time = Time.strptime("2011-12-04 00:00:00 -0700", "%Y-%m-%d %H:%M:%S %Z")
+    assert_equal time, @merchant.updated_at
+  end
+
+  def test_it_knows_its_items
+    assert_equal 3, @merchant.items.size
+  end
+
+  def test_it_knows_its_invoices
+    assert_equal 10, @merchant.invoices.size
+  end
+
+  def test_it_knows_its_customers
+    assert_equal 10, @merchant.customers.size
+  end
 
 end

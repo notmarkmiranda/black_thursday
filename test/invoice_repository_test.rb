@@ -41,4 +41,8 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal 1, @invrepo.find_all_by_date(date).size
   end
 
+  def test_it_inspects_itself
+    assert_equal "#<InvoiceRepository 4985 rows>", @invrepo.inspect
+  end
+
 end

@@ -37,7 +37,8 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal 2, @custrepo.find_all_by_first_name("mArK").size
   end
 
-  
-
+  def test_it_inspects
+    assert_equal "#<CustomerRepository 1000 rows>", @custrepo.inspect
+  end
 
 end
