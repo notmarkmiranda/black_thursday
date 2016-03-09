@@ -188,8 +188,7 @@ class SalesAnalyst
     ids.map{|id| @se.merchants.find_by_id(id) }
   end
 
-
-  def most_sold_item_for_merchant(merchant_id)
+  def first_half(merchant_id)
     invoices = @se.invoices.find_all_by_merchant_id(merchant_id).map do |invoice|
       invoice
     end
@@ -199,26 +198,25 @@ class SalesAnalyst
     invoice_numbers = successful.map do |invoice|
       invoice.id
     end
-    ii_objects = invoice_numbers.map do |num|
+    @ii_objects = invoice_numbers.map do |num|
       @se.invoice_items.find_all_by_invoice_id(num)
     end.flatten
-    sorted = ii_objects.sort_by { |ii| ii.quantity }.reverse
+  end
+
+  def most_sold_item_for_merchant(merchant_id)
+    first_half(merchant_id)
+    sorted = @ii_objects.sort_by { |ii| ii.quantity }.reverse
     winners = sorted.reject{|invoice_item| invoice_item.quantity < sorted.first.quantity }
     ids = winners.map{|invoice_item| invoice_item.item_id }
     ids.map{|id| @se.items.find_by_id(id)}.uniq
-    binding.pry
   end
 
   def best_item_for_merchant(merchant_id)
-    if most_sold_item_for_merchant(merchant_id).size == 1
-      most_sold_item_for_merchant(merchant_id).pop
-    else
-
-
-      top = most_sold_item_for_merchant(merchant_id).sort_by do |item|
-        item.unit_price
-    end.reverse
-    end
+    first_half(merchant_id)
+    a = @ii_objects.map do |obj|
+      [(obj.unit_price * obj.quantity), obj.item_id]
+    end.sort.last[-1]
+    @se.items.find_by_id(a).id
   end
 
 end
