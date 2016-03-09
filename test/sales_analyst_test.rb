@@ -109,7 +109,7 @@ class SalesAnalystTest < Minitest::Test
       :customers => "./data/customers.csv"
       })
     @sa2 = SalesAnalyst.new(se2)
-    assert_equal 6, @sa.merchants_with_pending_invoices.size
+    assert_equal 467, @sa.merchants_with_pending_invoices.size
     assert_equal Merchant, @sa.merchants_with_pending_invoices.first.class
   end
 
@@ -157,21 +157,12 @@ class SalesAnalystTest < Minitest::Test
       :customers => "./data/customers.csv"
       })
     @sa2 = SalesAnalyst.new(se2)
-    assert_equal 2, @sa.most_sold_item_for_merchant(12334132).size
+    assert_equal 4, @sa.most_sold_item_for_merchant(12334132).size
     assert_equal Item, @sa.most_sold_item_for_merchant(12334132).first.class
   end
 
   def test_it_returns_the_best_item_for_a_merchant
-    se2 = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./fixtures/merchants_4.csv",
-      :invoices => "./fixtures/invoices_4.csv",
-      :invoice_items => "./fixtures/invoice_items_4.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-    @sa2 = SalesAnalyst.new(se2)
-    assert_equal "best item", @sa2.most_sold_item_for_merchant(12334132).name
-    assert_equal Item, @sa2.most_sold_item_for_merchant(12334132).class
+    assert_equal "White Nectarine Bubble Bath", @sa.best_item_for_merchant(12334132).name
+    assert_equal Item, @sa.best_item_for_merchant(12334132).class
   end
 end
