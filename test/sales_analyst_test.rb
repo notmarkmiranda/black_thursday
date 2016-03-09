@@ -96,7 +96,7 @@ class SalesAnalystTest < Minitest::Test
       })
     @sa2 = SalesAnalyst.new(se2)
     assert_equal "handicraftcallery", @sa2.top_revenue_earners(3).first.name
-    assert_equal 20, @sa2.top_revenue_earners.size
+    assert_equal 20, @sa.top_revenue_earners.size
   end
 
   def test_it_finds_which_merchants_have_pending_invoices
