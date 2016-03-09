@@ -163,13 +163,20 @@ class SalesAnalyst
   end
 
   def merchants_with_pending_invoices
-    failed_invoices = @se.invoices.all.keep_if do |invoice|
-      invoice.all_failed_transactions?
-    end
-    ids = failed_invoices.map do |invoice|
+    @se.invoices.all.reject do |invoice|
+      !invoice.all_failed_transactions?
+    end.map do |invoice|
       invoice.merchant_id
-    end.uniq
-    ids.map{|id| @se.merchants.find_by_id(id) }
+    end.uniq.map do |id|
+      @se.merchants.find_by_id(id)
+    end
+    # failed_invoices = @se.invoices.all.keep_if do |invoice|
+    #   invoice.all_failed_transactions?
+    # end
+    # ids = failed_invoices.map do |invoice|
+    #   invoice.merchant_id
+    # end.uniq
+    # ids.map{|id| @se.merchants.find_by_id(id) }
   end
 
   def merchants_with_only_one_item
@@ -216,7 +223,7 @@ class SalesAnalyst
     a = @ii_objects.map do |obj|
       [(obj.unit_price * obj.quantity), obj.item_id]
     end.sort.last[-1]
-    @se.items.find_by_id(a).id
+    @se.items.find_by_id(a)
   end
 
 end
