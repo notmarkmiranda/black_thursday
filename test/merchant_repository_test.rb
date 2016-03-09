@@ -29,8 +29,11 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_merchants_by_name
-    result = ["Shopin1901", "TheLilPinkBowtique", "77PINS", "HooknSpindle", "TIGHTpinch", "ShopAtPinkFlamingo"]
-    assert_equal result, @m_repo.find_all_by_name("pin").map { |merch| merch.name }
+    setup = @m_repo.find_all_by_name("pin")
+    result = ["Shopin1901", "TheLilPinkBowtique",
+              "77PINS", "HooknSpindle",
+              "TIGHTpinch", "ShopAtPinkFlamingo"]
+    assert_equal result, @m_repo.find_all_by_name("pin").map {|m| m.name}
   end
 
   def test_it_inspects

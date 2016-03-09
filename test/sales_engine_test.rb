@@ -16,6 +16,15 @@ class SalesEngineTest < Minitest::Test
       @i_repo = se.items
       @inv_repo = se.invoices
       @iirepo = se.invoice_items
+      @trans_repo = se.transactions
+  end
+
+  def test_it_knows_its_children
+    assert_equal ItemRepository, @i_repo.class
+    assert_equal MerchantRepository, @m_repo.class
+    assert_equal InvoiceRepository, @inv_repo.class
+    assert_equal InvoiceItemRepository, @iirepo.class
+    assert_equal TransactionRepository, @trans_repo.class
   end
 
   def test_items_returns_instance_of_all_merchant_items
@@ -38,6 +47,4 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_find_items_by_merchant_id
     assert_equal 1, @i_repo.find_all_by_merchant_id(12334112).size
   end
-
-
 end

@@ -47,4 +47,13 @@ class TransactionTest < Minitest::Test
     time = Time.strptime("2012-02-26 20:56:56 UTC", "%Y-%m-%d %H:%M:%S %Z")
     assert_equal time, @transaction.updated_at
   end
+
+  def test_invoice_returns_the_invoice_for_the_transaction
+    assert_equal 2179, @transaction.invoice.id
+  end
+
+  def test_merchant_returns_the_merchant_for_the_transaction
+    assert_equal "TurkishHands", @transaction.merchant.name
+  end
+
 end

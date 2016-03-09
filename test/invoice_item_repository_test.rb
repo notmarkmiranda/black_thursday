@@ -1,5 +1,5 @@
 require_relative 'test_helper'
-require_relative '../lib/invoice_item_repository'
+require_relative '../lib/sales_engine'
 
 class InvoiceItemRepositoryTest < Minitest::Test
 
@@ -43,4 +43,11 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal [], @iirepo.find_all_by_invoice_id(30300101030303)
   end
 
+  def test_find_all_by_merchant_id
+    assert_equal 10, @iirepo.find_all_by_merchant_id(12334105).size
+  end
+
+  def test_it_inspects_itself
+    assert_equal "#<InvoiceItemRepository 21830 rows>", @iirepo.inspect
+  end
 end

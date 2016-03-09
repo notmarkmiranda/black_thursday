@@ -27,11 +27,17 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal 1, @tranrepo.find_all_by_invoice_id(1298).size
   end
 
-  def test_find_all_by_credit_card_number_returns_all_tx_matching_given_cc_number
-    assert_equal 1, @tranrepo.find_all_by_credit_card_number(4068631943231473).size
+  def test_find_all_by_cc_number_returns_all_tx_matching_given_cc_number
+    cc_number = 4068631943231473
+    assert_equal 1, @tranrepo.find_all_by_credit_card_number(cc_number).size
   end
 
   def test_find_all_by_result_returns_all_transactions_matching_given_result
     assert_equal 827, @tranrepo.find_all_by_result("failed").size
   end
+
+  def test_it_inspects_itself
+    assert_equal "#<TransactionRepository 4985 rows>", @tranrepo.inspect
+  end
+
 end

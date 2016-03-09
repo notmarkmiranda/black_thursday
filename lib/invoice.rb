@@ -38,7 +38,7 @@ class Invoice
 
   def invoice_items
     invoice_repository.engine.invoice_items.find_all_by_merchant_id(self.id)
-  end
+  end#returns 0 if the invoice_items_status_is_pending..is that right?
 
   def items
     invoice_repository.engine.invoice_items.
@@ -75,7 +75,6 @@ class Invoice
         item.quantity * item.unit_price
       end.reduce(:+)
     end
-    #what should happen if the invoice isn't paid in full
   end
 
   def all_failed_transactions?

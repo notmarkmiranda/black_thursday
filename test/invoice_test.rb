@@ -45,8 +45,33 @@ class InvoiceTest < Minitest::Test
     assert_equal time, @invoice.updated_at
   end
 
-  # def test_items_can_return_items_on_invoice
-  #   assert_equal [7], @invoice.items
-  # end
+  def test_it_knows_its_merchant
+    assert_equal 12335938, @invoice.merchant.id
+  end
+
+  def test_it_knows_its_invoice_items
+    assert_equal 0, @invoice.invoice_items.size
+  end#is it 0 because the status is pending?
+
+  def test_it_knows_its_items
+    assert_equal 8, @invoice.items.size
+  end
+
+  def test_it_knows_its_transactions
+    assert_equal 2, @invoice.transactions.size
+  end
+
+  def test_it_knows_its_customer
+    assert_equal "Joey", @invoice.customer.first_name
+  end
+
+  def test_it_knows_its_total
+    result = 21067.77
+    assert_equal result, @invoice.total.to_f
+  end
+
+  def test_it_knows_if_it_has_no_successful_transactions
+    assert_equal false, @invoice.all_failed_transactions?
+  end
 
 end
