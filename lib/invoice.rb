@@ -1,4 +1,4 @@
-require_relative 'invoice_repository'
+# require_relative 'invoice_repository'
 
 class Invoice
   attr_accessor :invoice_data, :invoice_repository
