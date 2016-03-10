@@ -14,9 +14,10 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    num = find_merchant_ids.map do |id|
+    items_by_merchant = find_merchant_ids.map do |id|
       items_by_merch_id(id).size
-    end.map do |item_number|
+    end
+    num = items_by_merchant.map do |item_number|
       (item_number - average_items_per_merchant) ** 2
     end.reduce(:+) / (all_merchants.size - 1)
     Math.sqrt(num).round(2)
@@ -25,9 +26,10 @@ class SalesAnalyst
   def merchants_with_high_item_count
     baseline = (average_items_per_merchant +
                 average_items_per_merchant_standard_deviation)
-    find_merchant_ids.find_all do |id|
+    high_items = find_merchant_ids.find_all do |id|
       id if items_by_merch_id(id).size > baseline
-    end.map do |id|
+    end
+    high_items.map do |id|
       merchants.find_by_id(id)
     end
   end
@@ -58,9 +60,11 @@ class SalesAnalyst
 
   def average_invoices_per_merchant_standard_deviation
     ave = average_invoices_per_merchant
-    Math.sqrt(all_merchants.map do |merchant|
+    nums = all_merchants.map do |merchant|
       (merchant.invoices.size.to_f - ave)**2
-    end.reduce(:+) / (all_merchants.size - 1)).round(2)
+    end
+    num = nums.reduce(:+) / (all_merchants.size - 1)
+    Math.sqrt(num).round(2)
   end
 
   def top_merchants_by_invoice_count
@@ -81,12 +85,15 @@ class SalesAnalyst
 
   def top_days_by_invoice_count
     daily = Hash.new(0)
-    all_merchants.map do |merchant|
+
+    weekdays = all_merchants.map do |merchant|
       merchant.invoices.map {|invoice| Date::DAYNAMES[invoice.created_at.wday]}
-    end.flatten.each{ |weekday| daily[weekday]+=1 }
-    sum_of_squares = daily.values.map do |count|
+    end.flatten
+    weekdays.each{ |weekday| daily[weekday]+=1 }
+    sums_of_squares = daily.values.map do |count|
       (count - (invoices.all.size / 7.0))**2
-    end.reduce(:+)/6
+    end
+    sum_of_squares = sums_of_squares.reduce(:+)/6
     baseline = (invoices.all.size / 7.0) + Math.sqrt(sum_of_squares).round(2)
     day = daily.reject do |day, count|
       day if count < baseline
