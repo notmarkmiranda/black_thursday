@@ -32,6 +32,23 @@ class Merchant
     merchant_repository.engine.invoices.find_all_by_merchant_id(self.id)
   end
 
+  def successful_invoices
+    invoices.reject { |invoice| invoice.all_failed_transactions? }
+  end
+
+  def revenue
+    if successful_invoices.size > 0
+      ii_invoice_id = successful_invoices.map do |invoice|
+        invoice.invoice_items_invoice_id
+      end.flatten
+      ii_invoice_id.map do |ii|
+        ii.quantity * ii.unit_price
+      end.reduce(:+)
+    else
+      BigDecimal.new(0)
+    end
+  end
+
   def customers
     invoices.map do |invoice|
       invoice.customer

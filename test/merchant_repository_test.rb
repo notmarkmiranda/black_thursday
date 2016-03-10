@@ -29,7 +29,6 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_merchants_by_name
-    setup = @m_repo.find_all_by_name("pin")
     result = ["Shopin1901", "TheLilPinkBowtique",
               "77PINS", "HooknSpindle",
               "TIGHTpinch", "ShopAtPinkFlamingo"]
