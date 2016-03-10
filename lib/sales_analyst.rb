@@ -95,10 +95,10 @@ class SalesAnalyst
     end
     sum_of_squares = sums_of_squares.reduce(:+)/6
     baseline = (invoices.all.size / 7.0) + Math.sqrt(sum_of_squares).round(2)
-    day = daily.reject do |day, count|
+    days = daily.reject do |day, count|
       day if count < baseline
     end
-    day.keys
+    days.keys
   end
 
   def invoice_status(status)
@@ -146,7 +146,7 @@ class SalesAnalyst
     end.map do |merchant|
       merchant.items
     end.keep_if{|items| items.size == 1 }.flatten
-    ids = ones.map{|item| item.merchant_id }.map{|id| merchants.find_by_id(id) }
+    ones.map{|item| item.merchant_id }.map{|id| merchants.find_by_id(id) }
   end
 
   def most_sold_item_for_merchant(merchant_id)
