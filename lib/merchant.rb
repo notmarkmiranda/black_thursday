@@ -47,7 +47,6 @@ class Merchant
     else
       BigDecimal.new(0)
     end
-    # merchant_repository.engine.invoice_items.find_all_by_invoice_id()
   end
 
   def customers

@@ -41,12 +41,6 @@ module AnalystAssistant
     merchants.all.sort_by do |merch|
       merch.revenue if merch.revenue != nil
     end.reverse!
-    # ids = all_merchants.map{ |merchant| merchant.id }
-    # zipped = ids.map do |id|
-    #   [revenue_by_merchant(id) || BigDecimal.new(0), merchants.find_by_id(id)]
-    # end
-    # ranked = zipped.sort_by{|pair| pair[0] }.reverse
-    # ranked.map{ |pair| pair[1] }
   end
 
   def invoice_items_by_merchant(merch_id)
