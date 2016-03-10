@@ -37,11 +37,16 @@ class Merchant
   end
 
   def revenue
-    successful_invoices.map do |invoice|
-      invoice.invoice_items_invoice_id
-    end.flatten.map do |ii|
-      ii.quantity * ii.unit_price
-    end.reduce(:+)
+    if successful_invoices.size > 0
+      ii_invoice_id = successful_invoices.map do |invoice|
+        invoice.invoice_items_invoice_id
+      end.flatten
+      ii_invoice_id.map do |ii|
+        ii.quantity * ii.unit_price
+      end.reduce(:+)
+    else
+      BigDecimal.new(0)
+    end
     # merchant_repository.engine.invoice_items.find_all_by_invoice_id()
   end
 
