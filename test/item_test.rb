@@ -6,19 +6,6 @@ require 'pry'
 class ItemTest < Minitest::Test
   attr_accessor :item, :items_repo
 
-  def setup
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
-      :invoices => "./data/invoices.csv",
-      :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-    @items_repo = se.items
-    @item = @items_repo.all[0]
-  end
-
   def test_it_returns_the_integer_id_of_the_item
     assert_equal 263395237, @item.id
   end
@@ -50,7 +37,7 @@ class ItemTest < Minitest::Test
   end
 
   def test_merchant_item_can_find_its_merchant
-    item = @items_repo.find_by_id(263395237)
+    item = @i_repo.find_by_id(263395237)
     assert_equal "jejum", item.merchant.name
   end
 

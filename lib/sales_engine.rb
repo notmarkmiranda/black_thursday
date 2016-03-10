@@ -18,11 +18,12 @@ class SalesEngine
   def initialize(merchants_data = nil, items_data = nil,
                 invoices_data = nil, invoice_items_data = nil,
                 transactions_data = nil, customers_data = nil)
+
+    @invoices      = InvoiceRepository.new(invoices_data, self)
+    @transactions  = TransactionRepository.new(transactions_data, self)
     @merchants     = MerchantRepository.new(merchants_data, self)
     @items         = ItemRepository.new(items_data, self)
-    @invoices      = InvoiceRepository.new(invoices_data, self)
     @invoice_items = InvoiceItemRepository.new(invoice_items_data, self)
-    @transactions  = TransactionRepository.new(transactions_data, self)
     @customers     = CustomerRepository.new(customers_data, self)
   end
 

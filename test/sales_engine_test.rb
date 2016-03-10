@@ -3,22 +3,6 @@ require_relative '../lib/sales_engine'
 
 class SalesEngineTest < Minitest::Test
 
-  def setup
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
-      :invoices => "./data/invoices.csv",
-      :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-      @m_repo = se.merchants
-      @i_repo = se.items
-      @inv_repo = se.invoices
-      @iirepo = se.invoice_items
-      @trans_repo = se.transactions
-  end
-
   def test_it_knows_its_children
     assert_equal ItemRepository, @i_repo.class
     assert_equal MerchantRepository, @m_repo.class
@@ -28,7 +12,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_items_returns_instance_of_all_merchant_items
-    assert_equal 475, @m_repo.merchants.size
+    assert_equal 21, @m_repo.merchants.size
   end
 
   def test_can_find_merchant_by_id

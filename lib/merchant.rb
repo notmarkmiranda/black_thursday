@@ -1,11 +1,15 @@
 require_relative 'item_repository'
 
 class Merchant
-  attr_accessor :merchant_data, :merchant_repository
+  attr_accessor :merchant_data, :merchant_repository, :invoices, :successful_invoices
 
   def initialize(merchant_data, merchant_repository)
     @merchant_data = merchant_data
     @merchant_repository = merchant_repository
+
+    @build_invoices ||= merchant_repository.engine.invoices.find_all_by_merchant_id(id)
+    @build_sinvoices ||= invoices.reject { |invoice| invoice.all_failed_transactions? }
+
   end
 
   def id
@@ -29,11 +33,11 @@ class Merchant
   end
 
   def invoices
-    merchant_repository.engine.invoices.find_all_by_merchant_id(self.id)
+    @build_invoices
   end
 
   def successful_invoices
-    invoices.reject { |invoice| invoice.all_failed_transactions? }
+    @build_sinvoices
   end
 
   def revenue
