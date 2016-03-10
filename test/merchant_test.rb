@@ -3,21 +3,8 @@ require_relative '../lib/sales_engine'
 
 class MerchantTest < Minitest::Test
 
-  def setup
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
-      :invoices => "./data/invoices.csv",
-      :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-    @merchants_repo = se.merchants
-    @merchant = @merchants_repo.all[0]
-  end
-
   def test_it_knows_its_repo
-    assert_equal MerchantRepository, @merchants_repo.class
+    assert_equal MerchantRepository, @m_repo.class
   end
 
   def test_it_can_return_ids
@@ -43,19 +30,19 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_knows_its_invoices
-    assert_equal 10, @merchant.invoices.size
+    assert_equal 2, @merchant.invoices.size
   end
 
   def test_it_knows_its_customers
-    assert_equal 10, @merchant.customers.size
+    assert_equal 2, @merchant.customers.size
   end
 
   def test_can_return_only_successful_invoices
-    assert_equal 5, @merchant.successful_invoices.size
+    assert_equal 2, @merchant.successful_invoices.size
   end
 
   def test_can_return_revenue_for_single_merchant
-    assert_equal 73777.17, @merchant.revenue.to_f
+    assert_equal 891.09, @merchant.revenue.to_f
   end
 
 end

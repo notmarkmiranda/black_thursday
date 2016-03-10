@@ -4,20 +4,8 @@ require_relative '../lib/sales_engine'
 
 class MerchantRepositoryTest < Minitest::Test
 
-  def setup
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
-      :invoices => "./data/invoices.csv",
-      :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-    @m_repo = se.merchants
-  end
-
   def test_can_return_all_merchants
-    assert_equal 475, @m_repo.all.size
+    assert_equal 21, @m_repo.all.size
   end
 
   def test_can_find_merchant_by_id
@@ -29,14 +17,12 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_can_find_all_merchants_by_name
-    result = ["Shopin1901", "TheLilPinkBowtique",
-              "77PINS", "HooknSpindle",
-              "TIGHTpinch", "ShopAtPinkFlamingo"]
+    result = ["Shopin1901", "TheLilPinkBowtique"]
     assert_equal result, @m_repo.find_all_by_name("pin").map {|m| m.name}
   end
 
   def test_it_inspects
-    assert_equal "#<MerchantRepository 475 rows>", @m_repo.inspect
+    assert_equal "#<MerchantRepository 21 rows>", @m_repo.inspect
   end
 
 end

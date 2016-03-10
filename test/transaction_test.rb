@@ -4,18 +4,6 @@ require 'bigdecimal'
 require 'pry'
 
 class TransactionTest < Minitest::Test
-  def setup
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./data/merchants.csv",
-      :invoices => "./data/invoices.csv",
-      :invoice_items => "./data/invoice_items.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-      @tran_repo = se.transactions
-      @transaction = @tran_repo.all[0]
-  end
 
   def test_id_returns_the_transaction_id
     assert_equal 1, @transaction.id
@@ -48,12 +36,12 @@ class TransactionTest < Minitest::Test
     assert_equal time, @transaction.updated_at
   end
 
-  def test_invoice_returns_the_invoice_for_the_transaction
+    def test_invoice_returns_the_invoice_for_the_transaction
     assert_equal 2179, @transaction.invoice.id
   end
 
   def test_merchant_returns_the_merchant_for_the_transaction
-    assert_equal "TurkishHands", @transaction.merchant.name
+    assert_equal "Shopin1901", @transaction.merchant.name
   end
 
 end

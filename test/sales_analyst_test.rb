@@ -1,33 +1,9 @@
 require_relative 'test_helper'
 require_relative '../lib/sales_analyst'
-require_relative '../lib/sales_engine'
+require_relative '../test/preload'
 require 'pry'
 
 class SalesAnalystTest < Minitest::Test
-
-  def setup
-    # se = SalesEngine.from_csv({
-    #   :items => "./data/items.csv",
-    #   :merchants => "./data/merchants.csv",
-    #   :invoices => "./data/invoices.csv",
-    #   :invoice_items => "./data/invoice_items.csv",
-    #   :transactions => "./data/transactions.csv",
-    #   :customers => "./data/customers.csv"
-    #   })
-    #
-    # @sa = SalesAnalyst.new(se)
-
-    se = SalesEngine.from_csv({
-      :items => "./data/items.csv",
-      :merchants => "./fixtures/merchants_4.csv",
-      :invoices => "./fixtures/invoices_4.csv",
-      :invoice_items => "./fixtures/invoice_items_4.csv",
-      :transactions => "./data/transactions.csv",
-      :customers => "./data/customers.csv"
-      })
-    @sa = SalesAnalyst.new(se)
-
-  end
 
   def test_it_finds_the_average_items_per_merchant
     assert_equal 65.1, @sa.average_items_per_merchant
@@ -95,7 +71,7 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_finds_which_merchants_have_pending_invoices
 
-    assert_equal 11, @sa.merchants_with_pending_invoices.size
+    assert_equal 10, @sa.merchants_with_pending_invoices.size
     assert_equal Merchant, @sa.merchants_with_pending_invoices.first.class
   end
 
